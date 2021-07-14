@@ -1,6 +1,9 @@
 pipeline:
-  hello:
-    image: alpine:3.6
+  PEP8:
+    image: alpine:latest
 
     commands:
-      - echo 　"Hello World"
+      - echo 　"Welcome to NextHime CI"
+      - apk --update-cache add python3 python3-dev py3-pip gcc g++ curl
+      - pip install flake8
+      - flake8 .
