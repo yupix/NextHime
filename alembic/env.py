@@ -8,7 +8,7 @@ from alembic import context
 
 import sys
 
-sys.path = ['', '..'] + sys.path[1:]
+sys.path = ["", ".."] + sys.path[1:]
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -18,15 +18,15 @@ config = context.config
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
 
-base_model_path = 'ssm.sql.models'
+base_model_path = "ssm.sql.models"
 target_models = [
-    'ssm.sql.models.api',
-    'ssm.sql.models.basic',
-    'ssm.sql.models.blocklist',
-    'ssm.sql.models.blog',
-    'ssm.sql.models.eew',
-    'ssm.sql.models.note',
-    'ssm.sql.models.WarframeFissure'
+    "ssm.sql.models.api",
+    "ssm.sql.models.basic",
+    "ssm.sql.models.blocklist",
+    "ssm.sql.models.blog",
+    "ssm.sql.models.eew",
+    "ssm.sql.models.note",
+    "ssm.sql.models.WarframeFissure",
 ]
 
 
@@ -43,7 +43,7 @@ def combine_metadata(*args):
 
 
 for target in target_models:
-    model = import_module(f'{target}')
+    model = import_module(f"{target}")
     target_metadata = combine_metadata(model.Base.metadata)
 
 
