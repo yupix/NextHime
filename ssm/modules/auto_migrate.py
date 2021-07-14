@@ -30,9 +30,9 @@ class AutoMigrate(object):
         logs = result.stdout.decode("utf-8").split("\n")
         for log in logs:
             if (
-                re.search("Generating (.*) done", str(log).strip())
-                or re.search("INFO\s(.*)\sRunning\supgrade\s(.*)\s->\s(.*),\s(.*)", log)
-                or re.search("ERROR (.*) Target database is not up to date.", log)
+                    re.search("Generating (.*) done", str(log).strip())
+                    or re.search("INFO (.*) Running upgrade (.*) -> (.*), (.*)", log)
+                    or re.search("ERROR (.*) Target database is not up to date.", log)
             ):
                 return 0
             elif re.search("FAILED: Can't locate revision identified by (.*)", log):
