@@ -1,18 +1,27 @@
-pipeline:
-  PEP8:
-    image: alpine:latest
+kind: pipeline
+type: docker
+name: backend
 
+steps:
+  - name: PEP8
+    image: alpine:latest
     commands:
       - echo 　"Welcome to NextHime CI"
       - apk --update-cache add python3 python3-dev py3-pip gcc g++ curl
       - pip install flake8
       - flake8 . --exclude venv
 
-  GITEA_RELEASE:
+steps:
+  - name: GITEA_RELEASE
     image: plugins/gitea-release
     settings:
-      api_key: $$API_KEY
+      api_key: API_KEY
       base_url: https://tea.akarinext.org
       files: ./*
-    when:
-      event: tag
+  - trigger:
+      event:
+        - tag
+
+kind: secret
+name: API_KEY
+data: ijf+Bg4WA6T0MXma5aLPpDYK91xxhqxgDyNdALjX63yWtii/FIb82H5E9Bt9zwcBrEM+6JjTKZW7zrbZ0nIpMDTHkGM=
