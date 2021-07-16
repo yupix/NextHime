@@ -18,8 +18,9 @@ steps:
       api_key: API_KEY
       base_url: https://tea.akarinext.org
       files: ./*
-    when:
-      event: tag
+  trigger:
+      event:
+      - tag
 
 kind: secret
 name: API_KEY
