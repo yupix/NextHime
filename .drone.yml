@@ -8,8 +8,7 @@ pipeline:
       - pip install flake8
       - flake8 . --exclude venv
 
-  steps:
-    name: gitea_release
+  GITEA_RELEASE:
     image: plugins/gitea-release
     settings:
       api_key: $$API_KEY
