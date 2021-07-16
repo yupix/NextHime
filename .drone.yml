@@ -14,5 +14,3 @@ pipeline:
       api_key: $$API_KEY
       base_url: https://tea.akarinext.org
       files: ./*
-    when:
-      event: tag
