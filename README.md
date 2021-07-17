@@ -13,12 +13,7 @@
 ### ArchLinux | Neon(Ubuntu)
 
 - libpq-dev 
-- python-dev 
-- libxml2-dev 
-- libxslt1-dev
-- libldap2-dev
-- libsasl2-dev 
-- libffi-dev
+- python3.9-dev # 3.9は使用しているバージョンによる
 - postgresql
 - git
 - base-devel
