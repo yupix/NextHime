@@ -18,15 +18,15 @@ config = context.config
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
 
-base_model_path = "ssm.sql.models"
+base_model_path = "src.sql.models"
 target_models = [
-    "ssm.sql.models.api",
-    "ssm.sql.models.basic",
-    "ssm.sql.models.blocklist",
-    "ssm.sql.models.blog",
-    "ssm.sql.models.eew",
-    "ssm.sql.models.note",
-    "ssm.sql.models.WarframeFissure",
+    "src.sql.models.api",
+    "src.sql.models.basic",
+    "src.sql.models.blocklist",
+    "src.sql.models.blog",
+    "src.sql.models.eew",
+    "src.sql.models.note",
+    "src.sql.models.WarframeFissure",
 ]
 
 
@@ -35,6 +35,19 @@ target_models = [
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 def combine_metadata(*args):
+    """Short summary.
+
+    Parameters
+    ----------
+    *args : type
+        Description of parameter `*args`.
+
+    Returns
+    -------
+    type
+        Description of returned object.
+
+    """
     m = MetaData()
     for metadata in args:
         for t in metadata.tables.values():
@@ -54,13 +67,13 @@ for target in target_models:
 
 
 def run_migrations_offline():
-    """Run migrations in 'offline' mode.
-    This configures the context with just a URL
-    and not an Engine, though an Engine is acceptable
-    here as well.  By skipping the Engine creation
-    we don't even need a DBAPI to be available.
-    Calls to context.execute() here emit the given string to the
-    script output.
+    """Short summary.
+
+    Returns
+    -------
+    type
+        Description of returned object.
+
     """
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
@@ -75,9 +88,13 @@ def run_migrations_offline():
 
 
 def run_migrations_online():
-    """Run migrations in 'online' mode.
-    In this scenario we need to create an Engine
-    and associate a connection with the context.
+    """Short summary.
+
+    Returns
+    -------
+    type
+        Description of returned object.
+
     """
     connectable = engine_from_config(
         config.get_section(config.config_ini_section),

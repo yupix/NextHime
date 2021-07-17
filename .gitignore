@@ -8,3 +8,5 @@ NextHime.kdev4
 .env
 alembic.ini
 
+# 一時ファイルなど =============>
+__pycache__
