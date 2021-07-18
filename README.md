@@ -6,14 +6,13 @@
 
 ## 概要
 
-このProjectは [SSM](https://github.com/yupix/ssm) の後継作です。
-また、このProjectは[AGPL](LICENSE)ライセンスのもと配布または使用できます
+このProjectは [SSM](https://github.com/yupix/ssm) の後継作です。 また、このProjectは[AGPL](LICENSE)ライセンスのもと配布または使用できます
 
 ## OS毎の依存関係
 
 ### ArchLinux | Neon(Ubuntu)
 
-- libpq-dev 
+- libpq-dev
 - python3.9-dev # 3.9は使用しているバージョンによる
 - postgresql
 - git
@@ -21,9 +20,7 @@
 
 ### Windows10 | Windows11
 
-Windowsは依存関係を整えればWindows11での動作も確認していますが、これは初期段階での検証であり。
-今後のアップデートでUnix専用のパッケージなどを追加することによって正常に動作しなくなる可能性があります。
-また、これらは過去の断片的な記憶から書いている依存関係であり、実際は他の依存関係も必要かもしれません。
+Windowsは依存関係を整えればWindows11での動作も確認していますが、これは初期段階での検証であり。 今後のアップデートでUnix専用のパッケージなどを追加することによって正常に動作しなくなる可能性があります。 また、これらは過去の断片的な記憶から書いている依存関係であり、実際は他の依存関係も必要かもしれません。
 
 - postgresql
 - git
@@ -47,6 +44,7 @@ python3 run.py  # 実行
 ```
 
 ### Discord BOTの設定
+
 BOTを招待する際のSCOPES
 ![img.png](./src/assets/images/README/scopes.png)
 
