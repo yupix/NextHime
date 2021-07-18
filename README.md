@@ -2,6 +2,7 @@
 
 ![YX SERIES](https://s3.akarinext.org/misskey/*/29af8bc0-54d3-4ac1-801c-aef2990855cc.png)
 
+<a href="https://codeclimate.com/github/yupix/NextHime/maintainability"><img src="https://api.codeclimate.com/v1/badges/4c0c6adf8a722fc70a36/maintainability" /></a> <a href="https://codeclimate.com/github/yupix/NextHime/test_coverage"><img src="https://api.codeclimate.com/v1/badges/4c0c6adf8a722fc70a36/test_coverage" /></a>
 
 ## 概要
 
@@ -47,7 +48,7 @@ python3 run.py  # 実行
 
 ### Discord BOTの設定
 BOTを招待する際のSCOPES
-![img.png](assets/images/README/scopes.png)
+![img.png](./src/assets/images/README/scopes.png)
 
 INTENTSの設定
-![img.png](./assets/images/README/intents.png)
+![img.png](./src/assets/images/README/intents.png)
