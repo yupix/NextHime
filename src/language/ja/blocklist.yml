@@ -1,0 +1,25 @@
+meta:
+  lang: "日本語"
+
+BlocklistReactions:
+  register:
+    continue:
+      title: "{}さんをブロックリストに登録しました"
+      subtitle: "サーバーに平和が訪れることを祈ります"
+      embed_color: "9159498"
+
+    cancel:
+      title: "{}さんのブロックリスト登録をキャンセルしました"
+      subtitle: "平和が一番ですよね♪"
+      embed_color: "9795021"
+
+  unregister:
+    continue:
+      title: "{} さんのブロックリストを解除しました"
+      subtitle: "問題が発生しないことを祈ります"
+      embed_color: "9159498"
+
+    cancel:
+      title: "{} さんのブロックリスト解除をキャンセルしました"
+      subtitle: "無理に解除する必要性はありません！"
+      embed_color: "9795021"

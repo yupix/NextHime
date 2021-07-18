@@ -1,0 +1,26 @@
+meta:
+  lang: "日本語"
+
+logger:
+  init_success: "初期化に成功しました"
+
+migrate:
+  action:
+    run_check:
+      message:
+        check: "自動Migrate(α)を実行しますか? y または n"
+        run: "現在実行中です"
+        timeout: "タイムアウト設定の%s秒を経過したため実行しません。"
+
+  error:
+    "revision identified error":
+      name: "revision identified error"
+      message: "データベースのバージョン管理システムとの整合性が損なわれています。再度実行し問題が修正されない場合は作者へご連絡ください"
+
+    "too few arguments":
+      name: "too few arguments"
+      message: "引数が無効です\n再度実行し問題が修正されない場合はバグですので、作者へご連絡ください。"
+
+    "AdaptingMigrateFilesError":
+      name: "Adapting Migrate Files Error"
+      message: "migrateファイルの適応に失敗しました"
