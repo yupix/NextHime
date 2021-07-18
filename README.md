@@ -52,3 +52,7 @@ BOTを招待する際のSCOPES
 
 INTENTSの設定
 ![img.png](./src/assets/images/README/intents.png)
+
+## 開発者向け情報
+
+- このプロジェクトをPycharmなどのエミュレート端末で動作させるとinputtimeoutが正常に動作しない可能性があります。**この問題は通常の非エミュレート端末では発生しません**
