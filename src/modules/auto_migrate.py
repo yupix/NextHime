@@ -28,7 +28,8 @@ class AdaptingMigrateFilesError(Exception):
 class AutoMigrate(object):
     def __init__(self):
         self.command = ['alembic', 'revision', '--autogenerate']
-        self.logger = EasyLogger(getLogger('auto_migrate'), logger_level='DEBUG').create()
+        self.logger = EasyLogger(getLogger('auto_migrate'),
+                                 logger_level='DEBUG').create()
 
     def process(self, commands: list = None):
         if commands is None:
@@ -36,14 +37,16 @@ class AutoMigrate(object):
         else:
             command = commands
         status = None
-        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        result = subprocess.run(command, stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT)
         logs = result.stdout.decode('utf-8').split('\n')
         for log in logs:
-            if re.search("Generating (.*) done", str(log).strip()) or re.search('INFO\s(.*)\sRunning\supgrade\s(.*)\s->\s(.*),\s(.*)', log) or re.search(
-                    'ERROR (.*) Target database is not up to date.',
-                    log):
+            if (re.search("Generating (.*) done", str(log).strip()) or
+                    re.search('INFO (.*) Running upgrade (.*) -> (.*), (.*)', log) or
+                    re.search('ERROR (.*) Target database is not up to date.', log)):
                 return 0
-            elif re.search('FAILED: Can\'t locate revision identified by (.*)', log):
+            elif re.search('FAILED: Can\'t locate revision identified by (.*)',
+                           log):
                 return 'revision identified error'
             elif re.search('alembic: error: too few arguments', log):
                 return 'too few arguments'
