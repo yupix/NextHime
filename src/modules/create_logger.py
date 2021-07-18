@@ -1,7 +1,6 @@
-import coloredlogs
-from logging import getLogger, StreamHandler, DEBUG, Formatter, addLevelName
+from logging import StreamHandler, addLevelName
 
-"""create easy logger"""
+import coloredlogs
 
 
 class EasyLogger:
