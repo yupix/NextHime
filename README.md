@@ -1,6 +1,6 @@
 # Next Hime Project
 
-![YX SERIES](https://s3.akarinext.org/misskey/*/29af8bc0-54d3-4ac1-801c-aef2990855cc.png)
+![鳴花 PROJECT](https://s3.akarinext.org/assets/*/HIME%20MIKOT%20%282%29.png)
 
 <a href="https://codeclimate.com/github/yupix/NextHime/maintainability"><img src="https://api.codeclimate.com/v1/badges/4c0c6adf8a722fc70a36/maintainability" /></a> <a href="https://codeclimate.com/github/yupix/NextHime/test_coverage"><img src="https://api.codeclimate.com/v1/badges/4c0c6adf8a722fc70a36/test_coverage" /></a>
 
@@ -9,7 +9,6 @@
 このProjectは [SSM](https://github.com/yupix/ssm) の後継作です。 また、このProjectは[AGPL](LICENSE)ライセンスのもと配布または使用できます
 
 ## OS毎の依存関係
-
 ### ArchLinux | Neon(Ubuntu)
 
 - libpq-dev
@@ -20,7 +19,8 @@
 
 ### Windows10 | Windows11
 
-Windowsは依存関係を整えればWindows11での動作も確認していますが、これは初期段階での検証であり。 今後のアップデートでUnix専用のパッケージなどを追加することによって正常に動作しなくなる可能性があります。 また、これらは過去の断片的な記憶から書いている依存関係であり、実際は他の依存関係も必要かもしれません。
+Windowsは依存関係を整えればWindows11での動作も確認していますが、これは初期段階での検証であり。 今後のアップデートでUnix専用のパッケージなどを追加することによって正常に動作しなくなる可能性があります。
+また、これらは過去の断片的な記憶から書いている依存関係であり、実際は他の依存関係も必要かもしれません。
 
 - postgresql
 - git
