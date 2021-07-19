@@ -1,6 +1,7 @@
 # Next Hime Project
 
 ![鳴花 PROJECT](https://s3.akarinext.org/assets/*/HIME%20MIKOT%20%282%29.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fyupix%2FNextHime.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fyupix%2FNextHime?ref=badge_shield)
 
 <a href="https://codeclimate.com/github/yupix/NextHime/maintainability"><img src="https://api.codeclimate.com/v1/badges/4c0c6adf8a722fc70a36/maintainability" /></a> <a href="https://codeclimate.com/github/yupix/NextHime/test_coverage"><img src="https://api.codeclimate.com/v1/badges/4c0c6adf8a722fc70a36/test_coverage" /></a>
 
@@ -54,3 +55,7 @@ INTENTSの設定
 ## 開発者向け情報
 
 - このプロジェクトをPycharmなどのエミュレート端末で動作させるとinputtimeoutが正常に動作しない可能性があります。**この問題は通常の非エミュレート端末では発生しません**
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fyupix%2FNextHime.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fyupix%2FNextHime?ref=badge_large)
