@@ -2,11 +2,13 @@
 
 ![鳴花 PROJECT](https://s3.akarinext.org/assets/*/HIME%20MIKOT%20%282%29.png)
 
-<a href="https://codeclimate.com/github/yupix/NextHime/maintainability"><img src="https://api.codeclimate.com/v1/badges/4c0c6adf8a722fc70a36/maintainability" /></a> <a href="https://codeclimate.com/github/yupix/NextHime/test_coverage"><img src="https://api.codeclimate.com/v1/badges/4c0c6adf8a722fc70a36/test_coverage" /></a>
+<a href="https://codeclimate.com/github/yupix/NextHime/maintainability"><img src="https://api.codeclimate.com/v1/badges/4c0c6adf8a722fc70a36/maintainability" /></a> 
+<a href="https://codeclimate.com/github/yupix/NextHime/test_coverage"><img src="https://api.codeclimate.com/v1/badges/4c0c6adf8a722fc70a36/test_coverage" /></a>
+[![CodeFactor](https://www.codefactor.io/repository/github/yupix/nexthime/badge)](https://www.codefactor.io/repository/github/yupix/nexthime)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fyupix%2FNextHime.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fyupix%2FNextHime?ref=badge_shield)
 
 ## 概要
-
-このProjectは [SSM](https://github.com/yupix/ssm) の後継作です。 また、このProjectは[AGPL](LICENSE)ライセンスのもと配布または使用できます
+このProjectは [SSM](https://github.com/yupix/ssm) の後継作です。 また、このProjectは[MPL2.0](LICENSE)ライセンスのもと配布または使用できます
 
 ## OS毎の依存関係
 ### ArchLinux | Neon(Ubuntu)
