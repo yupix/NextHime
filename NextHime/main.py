@@ -15,7 +15,6 @@ from uvicorn import Config, Server
 
 from NextHime import logger, spinner
 from NextHime import system_language
-from NextHime.routers import v1
 from src.modules.auto_migrate import AutoMigrate, RevisionIdentifiedError, TooFewArguments, AdaptingMigrateFilesError
 from src.modules.voice_generator import create_wave
 
@@ -41,9 +40,18 @@ read_aloud = config_ini["JTALK"]["read_aloud"]
 Speed = config_ini["JTALK"]["Speed"]
 show_bot_chat_log = config_ini["OPTIONS"]["show_bot_chat_log"]
 
-app = FastAPI(title=f"{bot_user} API")
-app.include_router(v1.servers.router)
-app = VersionedFastAPI(app, version_format="{major}", prefix_format="/v{major}")
+
+class API:
+    def __init__(self):
+        self.title = f'{bot_user} API'
+
+    async def create(self):
+        from NextHime.routers import v1
+        app = FastAPI(title=f"{self.title}")
+        app.include_router(v1.servers.router)
+        app = VersionedFastAPI(app, version_format="{major}", prefix_format="/v{major}")
+        return app
+
 
 bot = None
 slash_client = None
@@ -92,14 +100,10 @@ def check_args(argument):
                 or hit is not None
         ):
             hit, args_list = add_list(hit, i, args_list)
-
-    else:
-        logger.debug(hit)
-        if hit is not None:
-            return "1", f"{i}には引数が必要です"
-        else:
-            print(args_list)
-            return args_list
+    logger.debug(hit)
+    if hit is not None:
+        return "1", f"{i}には引数が必要です"
+    return args_list
 
 
 class NextHime(commands.Bot):
@@ -121,8 +125,6 @@ class NextHime(commands.Bot):
         print(self.user.name)
         print(self.user.id)
         print("--------------------------------")
-        # if bool(strtobool(use_api)) is True:
-        # api_request.start()
         # if bool(strtobool(use_eew)) is True:
         # await bot_eew_loop.start()
 
@@ -183,6 +185,7 @@ async def bot_run(bot_loop):
 
 
 async def api_run(loop1):
+    app = await API().create()
     asyncio.set_event_loop(loop1)
     config = Config(app=app, host="0.0.0.0", loop=loop1, port=5000, reload=True)
     server = Server(config)
