@@ -63,22 +63,22 @@ class EewSendChannel:
             description="地域に関しては今後のメッセージを閲覧ください",
         )
         embed.add_field(
-            name=f"震央",
+            name="震央",
             value=f"{result['Body']['Earthquake']['Hypocenter']['Name']}",
             inline=True,
         )
         embed.add_field(
-            name=f"マグニチュード",
+            name="マグニチュード",
             value=f"M{result['Body']['Earthquake']['Magnitude']}",
             inline=True,
         )
         embed.add_field(
-            name=f"深さ",
+            name="深さ",
             value=f"約{result['Body']['Earthquake']['Hypocenter']['Depth']}km",
             inline=True,
         )
         embed.add_field(
-            name=f"最大震度",
+            name="最大震度",
             value=f"{result['Body']['Intensity']['Observation']['MaxInt']}".replace(
                 "+", "強"
             ).replace("-", "弱"),
@@ -104,10 +104,10 @@ class EewSendChannel:
             color=intensity_color, title=f"{result['Head']['InfoKind']}"
         )
         intensity_embed.add_field(
-            name=f"震央", value=f"{intensity_pref['Name']}", inline=True
+            name="震央", value=f"{intensity_pref['Name']}", inline=True
         )
         intensity_embed.add_field(
-            name=f"最大深度",
+            name="最大深度",
             value=f"{intensity_pref['MaxInt']}".replace("+", "強").replace("-", "弱"),
             inline=True,
         )
@@ -116,7 +116,7 @@ class EewSendChannel:
             for intensity_pref_area_city in intensity_pref_area["City"]:
                 intensity_pref_area_city_list += f"{intensity_pref_area_city['Name']}, "
         intensity_embed.add_field(
-            name=f"周辺地域", value=f"{intensity_pref_area_city_list[:-1]}", inline=True
+            name="周辺地域", value=f"{intensity_pref_area_city_list[:-1]}", inline=True
         )
         intensity_embed.set_footer(
             text=f"{result['Head']['ReportDateTime']} 情報元: {result['Control']['PublishingOffice']}"
