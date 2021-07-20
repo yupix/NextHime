@@ -6,7 +6,7 @@ class HimeConfig:
     user: str
     prefix: str
     token: str
-    log: str
+    log_level: str
     lang: str
     auto_migrate: bool
     input_timeout: int
@@ -31,7 +31,7 @@ class HimeConfig:
     jtalk_speed: int
     jtalk_aloud: bool
     log_show_bot: bool
-    log_show_commit_: bool
+    log_show_commit: bool
     log_force_show_commit: bool
     sentry_use: bool
     sentry_dsn: str

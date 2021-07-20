@@ -1,6 +1,4 @@
 import asyncio
-import configparser
-import os
 import sys
 import traceback
 from distutils.util import strtobool
@@ -8,7 +6,6 @@ from distutils.util import strtobool
 import discord
 from discord.ext import commands
 from discord_slash import SlashCommand
-from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi_discord import DiscordOAuthClient
 from fastapi_versioning import VersionedFastAPI
@@ -16,17 +13,10 @@ from googletrans import Translator
 from starlette.middleware.cors import CORSMiddleware
 from uvicorn import Config, Server
 
-from NextHime import logger, spinner
+from NextHime import logger, spinner, config
 from NextHime import system_language
-from src.modules.Config import ConfigManager
 from src.modules.auto_migrate import AutoMigrate, RevisionIdentifiedError, TooFewArguments, AdaptingMigrateFilesError
 from src.modules.voice_generator import create_wave
-
-os.environ.clear()
-load_dotenv()
-config_ini = configparser.ConfigParser(os.environ)
-config_ini.read("./config.ini", encoding="utf-8")
-config = ConfigManager(config_ini).load()
 
 if config.api_discord_redirect_url and \
         config.api_discord_callback_url and \

@@ -10,6 +10,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+from src.modules.Config import ConfigManager
 from src.modules.create_logger import EasyLogger
 from src.modules.language_manager import LanguageManager
 
@@ -26,29 +27,19 @@ else:
 config = configparser.ConfigParser(os.environ)
 config.read("./config.ini", encoding="utf-8")
 
-###
-#   ログに関するコンフィグ
-###
-logger_level = config["DEFAULT"]["log"]
-use_language = config["DEFAULT"]["lang"]
-show_commit_log = config["OPTIONS"]["log_show_commit_"]
-force_show_commit_log = config["OPTIONS"]["log_force_show_commit"]
+os.environ.clear()
+load_dotenv()
+config_ini = configparser.ConfigParser(os.environ)
+config_ini.read("./config.ini", encoding="utf-8")
+config = ConfigManager(config_ini).load()
 
-###
-#   データベースに関するコンフィグ
-###
-db_user = config["DATABASE"]["db_user"]
-db_port = config["DATABASE"]["db_port"]
-db_host = config["DATABASE"]["db_host"]
-db_password = config["DATABASE"]["db_password"]
-db_default_database = config["DATABASE"]["db_database"]
 
 system_language = LanguageManager(
-    base_path="./src/language/", lang=f"{use_language}", module_name="system/info.yml"
+    base_path="./src/language/", lang=f"{config.lang}", module_name="system/info.yml"
 ).get()
 
 engine = create_engine(
-    f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_default_database}",
+    f"postgresql://{config.db_user}:{config.db_password}@{config.db_host}:{config.db_port}/{config.db_database}",
     echo=False,
     pool_pre_ping=True,
     connect_args={"connect_timeout": 10},
@@ -63,15 +54,15 @@ session = Session()
 # --------------------------------
 # loggerオブジェクトの宣言
 logger = getLogger("main")
-logger = EasyLogger(logger, logger_level=f"{logger_level}").create()
+logger = EasyLogger(logger, logger_level=f"{config.log_level}").create()
 spinner = Halo(text=f"{system_language['logger']['init_success']}", spinner="dots")
 spinner.start()
 db_manager = DbManager(
     session=session,
     logger=logger,
-    logger_level=f"{logger_level}",
-    show_commit_log=bool(strtobool(show_commit_log)),
-    force_show_commit_log=bool(strtobool(force_show_commit_log)),
+    logger_level=f"{config.log_level}",
+    show_commit_log=bool(strtobool(config.log_show_commit)),
+    force_show_commit_log=bool(strtobool(config.log_force_show_commit)),
 )
 spinner.succeed()
 
