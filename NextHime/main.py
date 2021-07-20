@@ -198,6 +198,12 @@ async def bot_run(bot_loop):
 
 async def api_run(loop1):
     app = await API().create()
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=['*'],
+        allow_credentials=True,
+        allow_methods=['*'],
+        allow_headers=['*'])
     asyncio.set_event_loop(loop1)
     config = Config(app=app, host="0.0.0.0", loop=loop1, port=5000, reload=True)
     server = Server(config)
