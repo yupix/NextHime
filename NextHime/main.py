@@ -8,6 +8,7 @@ from distutils.util import strtobool
 import discord
 from discord.ext import commands
 from discord_slash import SlashCommand
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi_discord import DiscordOAuthClient
 from fastapi_versioning import VersionedFastAPI
@@ -17,46 +18,28 @@ from uvicorn import Config, Server
 
 from NextHime import logger, spinner
 from NextHime import system_language
+from src.modules.Config import ConfigManager
 from src.modules.auto_migrate import AutoMigrate, RevisionIdentifiedError, TooFewArguments, AdaptingMigrateFilesError
 from src.modules.voice_generator import create_wave
 
+os.environ.clear()
+load_dotenv()
 config_ini = configparser.ConfigParser(os.environ)
 config_ini.read("./config.ini", encoding="utf-8")
+config = ConfigManager(config_ini).load()
 
-bot_user = config_ini["DEFAULT"]["User"]
-bot_prefix = config_ini["DEFAULT"]["Prefix"]
-bot_token = config_ini["DEFAULT"]["Token"]
-auto_migrate = config_ini["DEFAULT"]["AutoMigrate"]
-input_timeout = config_ini["DEFAULT"]["InputTimeOut"]
-reset_status = config_ini["RESET"]["Status"]
-
-custom_blogrole = config_ini["CUSTOM"]["Blogrole"]
-
-use_api = config_ini["API"]["use"]
-api_host = config_ini["API"]["host"]
-api_port = config_ini["API"]["port"]
-discord_client = config_ini["API"]["discord_client"]
-discord_client_secret = config_ini["API"]["discord_client_secret"]
-discord_callback_url = config_ini["API"]["discord_callback_url"]
-
-use_eew = config_ini["EEW"]["use"]
-
-Dic_Path = config_ini["JTALK"]["Dic_Path"]
-Voice_Path = config_ini["JTALK"]["Voice_Path"]
-Jtalk_Bin_Path = config_ini["JTALK"]["Jtalk_Bin_Path"]
-Output_wav_name = config_ini["JTALK"]["Output_wav_name"]
-read_aloud = config_ini["JTALK"]["read_aloud"]
-Speed = config_ini["JTALK"]["Speed"]
-show_bot_chat_log = config_ini["OPTIONS"]["show_bot_chat_log"]
-
-if discord_client and discord_client_secret and discord_callback_url:
-    discord_auth = DiscordOAuthClient(f'{discord_client}', f'{discord_client_secret}', f'{discord_callback_url}',
+if config.api_discord_redirect_url and \
+        config.api_discord_callback_url and \
+        config.api_discord_client and \
+        config.api_discord_client_secret:
+    discord_auth = DiscordOAuthClient(f'{config.api_discord_client}', f'{config.api_discord_client_secret}',
+                                      f'{config.api_discord_callback_url}',
                                       ('identify', 'guilds', 'email'))  # scopes
 
 
 class API:
     def __init__(self):
-        self.title = f'{bot_user} API'
+        self.title = f'{config.user} API'
 
     async def create(self):
         from NextHime.routers.v1 import discord_guild
@@ -152,7 +135,7 @@ class NextHime(commands.Bot):
         # await bot_eew_loop.start()
 
     async def on_message(self, ctx):
-        if bool(strtobool(show_bot_chat_log)) is False and ctx.author.bot is True:
+        if bool(strtobool(config.log_show_bot)) is False and ctx.author.bot is True:
             return
         logger.info(
             f"{ctx.guild.name}=> {ctx.channel.name}=> {ctx.author.name}: {ctx.content}"
@@ -164,9 +147,9 @@ class NextHime(commands.Bot):
             self.voice_clients, guild=ctx.guild
         )
 
-        if bool(strtobool(read_aloud)) is True and check_voice_channel is not None:
+        if bool(strtobool(config.jtalk_aloud)) is True and check_voice_channel is not None:
             create_wave(f"{ctx.content}")
-            source = discord.FFmpegPCMAudio(f"{Output_wav_name}")
+            source = discord.FFmpegPCMAudio(f"{config.jtalk_output_wav_name}")
             try:
                 ctx.guild.voice_client.play(source)
             except AttributeError:
@@ -180,9 +163,9 @@ async def migrate():
     from inputimeout import inputimeout, TimeoutOccurred
 
     try:
-        y_n = inputimeout(prompt=">>", timeout=int(input_timeout))
+        y_n = inputimeout(prompt=">>", timeout=int(config.input_timeout))
     except TimeoutOccurred:
-        logger.info(system_language['migrate']['action']['run_check']['message']['timeout'] % input_timeout)
+        logger.info(system_language['migrate']['action']['run_check']['message']['timeout'] % config.input_timeout)
         y_n = "something"
     if y_n == "y":
         try:
@@ -204,7 +187,7 @@ async def migrate():
 
 async def bot_run(bot_loop):
     asyncio.set_event_loop(bot_loop)
-    await bot.start(f"{bot_token}")
+    await bot.start(f"{config.token}")
 
 
 async def api_run(loop1):
@@ -216,20 +199,20 @@ async def api_run(loop1):
         allow_methods=['*'],
         allow_headers=['*'])
     asyncio.set_event_loop(loop1)
-    config = Config(app=app, host=f'{api_host}', loop=loop1, port=int(api_port), reload=True)
-    server = Server(config)
+    api_config = Config(app=app, host=f'{config.api_host}', loop=loop1, port=int(config.api_port), reload=True)
+    server = Server(api_config)
     await server.serve()
 
 
 def run(loop_bot, loop_api):
     global bot
     global slash_client
-    if bool(strtobool(auto_migrate)):
+    if bool(strtobool(config.auto_migrate)):
         asyncio.run(migrate())
     asyncio.set_event_loop(loop_bot)
     intents = discord.Intents.all()
-    bot = NextHime(command_prefix=f"{bot_prefix}", intents=intents)
-    if bool(strtobool(use_api)) is True:
+    bot = NextHime(command_prefix=f"{config.prefix}", intents=intents)
+    if bool(strtobool(config.api_use)) is True:
         future = asyncio.gather(bot_run(loop_bot), api_run(loop_api))
     else:
         future = asyncio.gather(bot_run(loop_bot))
