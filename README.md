@@ -12,7 +12,7 @@
 このProjectは [SSM](https://github.com/yupix/ssm) の後継作です。 また、このProjectは[MPL2.0](LICENSE)ライセンスのもと配布または使用できます
 
 ## OS毎の依存関係
-### ArchLinux | Neon(Ubuntu)
+### ArchLinux | Zorin(Ubuntu)
 
 - libpq-dev
 - python3.9-dev # 3.9は使用しているバージョンによる
