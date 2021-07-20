@@ -9,8 +9,10 @@ import discord
 from discord.ext import commands
 from discord_slash import SlashCommand
 from fastapi import FastAPI
+from fastapi_discord import DiscordOAuthClient
 from fastapi_versioning import VersionedFastAPI
 from googletrans import Translator
+from starlette.middleware.cors import CORSMiddleware
 from uvicorn import Config, Server
 
 from NextHime import logger, spinner
@@ -29,7 +31,12 @@ input_timeout = config_ini["DEFAULT"]["InputTimeOut"]
 reset_status = config_ini["RESET"]["Status"]
 
 custom_blogrole = config_ini["CUSTOM"]["Blogrole"]
+
 use_api = config_ini["API"]["use"]
+discord_client = config_ini["API"]["discord_client"]
+discord_client_secret = config_ini["API"]["discord_client_secret"]
+discord_callback_url = config_ini["API"]["discord_callback_url"]
+
 use_eew = config_ini["EEW"]["use"]
 
 Dic_Path = config_ini["JTALK"]["Dic_Path"]
@@ -40,15 +47,21 @@ read_aloud = config_ini["JTALK"]["read_aloud"]
 Speed = config_ini["JTALK"]["Speed"]
 show_bot_chat_log = config_ini["OPTIONS"]["show_bot_chat_log"]
 
+if discord_client and discord_client_secret and discord_callback_url:
+    discord_auth = DiscordOAuthClient(f'{discord_client}', f'{discord_client_secret}', f'{discord_callback_url}',
+                                      ('identify', 'guilds', 'email'))  # scopes
+
 
 class API:
     def __init__(self):
         self.title = f'{bot_user} API'
 
     async def create(self):
-        from NextHime.routers import v1
+        from NextHime.routers.v1 import discord_guild
+        from NextHime.routers.v1 import auth
         app = FastAPI(title=f"{self.title}")
-        app.include_router(v1.servers.router)
+        app.include_router(discord_guild.index.router)
+        app.include_router(auth.index.router)
         app = VersionedFastAPI(app, version_format="{major}", prefix_format="/v{major}")
         return app
 
@@ -62,11 +75,10 @@ slash_client = None
     "NextHime.cogs.warframe",
     "NextHime.cogs.blog",
     "NextHime.cogs.read",
-    "NextHime.cogs.eew",
     "NextHime.cogs.basic",
 """
 
-INITIAL_EXTENSIONS = []
+INITIAL_EXTENSIONS = ["NextHime.cogs.eew", ]
 
 
 def translator(content):
