@@ -135,10 +135,19 @@ class NextHime(commands.Bot):
 
     async def on_ready(self):
         spinner.stop()
-        print("--------------------------------")
-        print(self.user.name)
-        print(self.user.id)
-        print("--------------------------------")
+        name_length = len(self.user.name)
+        id_length = len(str(self.user.id))
+        if name_length >= id_length:
+            length = name_length
+        else:
+            length = id_length
+        equal = '=' * length
+        print(f"""\033[32mログインに成功しました\033[0m
+#=========={equal}#
+\033[1mアカウント名\033[0m: \033[34m{self.user.name}\033[0m
+\033[1mアカウントID\033[0m: \033[34m{self.user.id}\033[0m
+#=========={equal}#
+""")
         # if bool(strtobool(use_eew)) is True:
         # await bot_eew_loop.start()
 
