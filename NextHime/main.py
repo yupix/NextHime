@@ -122,7 +122,6 @@ class NextHime(commands.Bot):
 #=========={equal}#
 """)
 
-
     async def on_message(self, ctx):
         if bool(strtobool(config.log_show_bot)) is False and ctx.author.bot is True:
             return
