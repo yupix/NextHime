@@ -1,0 +1,3 @@
+[submodule "Dash-NextHime"]
+	path = Dash-NextHime
+	url = git@github.com:yupix/Dash-NextHime.git
