@@ -31,17 +31,17 @@ config.read("./config.ini", encoding="utf-8")
 ###
 logger_level = config["DEFAULT"]["log"]
 use_language = config["DEFAULT"]["lang"]
-show_commit_log = config["OPTIONS"]["show_commit_log"]
-force_show_commit_log = config["OPTIONS"]["force_show_commit_log"]
+show_commit_log = config["OPTIONS"]["log_show_commit_"]
+force_show_commit_log = config["OPTIONS"]["log_force_show_commit"]
 
 ###
 #   データベースに関するコンフィグ
 ###
-db_user = config["DATABASE"]["User"]
-db_port = config["DATABASE"]["Port"]
-db_host = config["DATABASE"]["Host"]
-db_password = config["DATABASE"]["Password"]
-db_default_database = config["DATABASE"]["Default_Database"]
+db_user = config["DATABASE"]["db_user"]
+db_port = config["DATABASE"]["db_port"]
+db_host = config["DATABASE"]["db_host"]
+db_password = config["DATABASE"]["db_password"]
+db_default_database = config["DATABASE"]["db_database"]
 
 system_language = LanguageManager(
     base_path="./src/language/", lang=f"{use_language}", module_name="system/info.yml"
