@@ -33,6 +33,8 @@ reset_status = config_ini["RESET"]["Status"]
 custom_blogrole = config_ini["CUSTOM"]["Blogrole"]
 
 use_api = config_ini["API"]["use"]
+api_host = config_ini["API"]["host"]
+api_port = config_ini["API"]["port"]
 discord_client = config_ini["API"]["discord_client"]
 discord_client_secret = config_ini["API"]["discord_client_secret"]
 discord_callback_url = config_ini["API"]["discord_callback_url"]
@@ -205,7 +207,7 @@ async def api_run(loop1):
         allow_methods=['*'],
         allow_headers=['*'])
     asyncio.set_event_loop(loop1)
-    config = Config(app=app, host="0.0.0.0", loop=loop1, port=5000, reload=True)
+    config = Config(app=app, host=f'{api_host}', loop=loop1, port=int(api_port), reload=True)
     server = Server(config)
     await server.serve()
 
