@@ -121,8 +121,7 @@ class NextHime(commands.Bot):
 \033[1mアカウントID\033[0m: \033[34m{self.user.id}\033[0m
 #=========={equal}#
 """)
-        # if bool(strtobool(use_eew)) is True:
-        # await bot_eew_loop.start()
+
 
     async def on_message(self, ctx):
         if bool(strtobool(config.log_show_bot)) is False and ctx.author.bot is True:
