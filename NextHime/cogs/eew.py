@@ -19,7 +19,7 @@ class EewCog(commands.Cog):
 
     @tasks.loop(seconds=1)
     async def bot_eew_loop(self):
-        url = "https://s3.akarinext.org/assets/*/post_data.json"
+        url = "https://dev.narikakun.net/webapi/earthquake/post_data.json"
         try:
             result = requests.get(url).json()
             logger.debug(result)
