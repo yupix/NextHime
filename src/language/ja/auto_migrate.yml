@@ -1,0 +1,18 @@
+meta:
+  lang: "日本語"
+
+action:
+  run_check:
+    message:
+      check: "自動Migrate(α)を実行しますか? y または n"
+      run: "現在実行中です"
+      timeout: "タイムアウト設定の{}秒を経過したため実行しません。"
+
+
+"revision identified error":
+  "name": "revision identified error"
+  "message": "データベースのバージョン管理システムとの整合性が損なわれています\n再度実行し問題が修正されない場合は作者へご連絡ください"
+
+"too few arguments":
+  "name": "too few arguments"
+  "message": "引数が無効です\n再度実行し問題が修正されない場合はバグですので、作者へご連絡ください。"
