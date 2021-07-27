@@ -1,10 +1,14 @@
 import json
 
+import yaml
 from bs4 import BeautifulSoup as bs4
 import dataclasses
 import requests as requests
 
 from src.modules.embed_manager import EmbedManager
+
+with open(f"src/language/ja/eew/system.yml", encoding="utf-8") as f:
+    language = yaml.safe_load(f)
 
 
 @dataclasses.dataclass
@@ -51,22 +55,23 @@ class EewSendChannel:
             'headline': f'{self.result["Head"]["Headline"]}',
             'epicenter': f'{self.result["Body"]["Earthquake"]["Hypocenter"]["Name"]}',
             'magnitude': f'M{self.result["Body"]["Earthquake"]["Magnitude"]}',
-            'depth': f'約{self.result["Body"]["Earthquake"]["Hypocenter"]["Depth"]}km',
-            'max_intensity': f"{self.result['Body']['Intensity']['Observation']['MaxInt']}".replace("+", "強").replace("-",
-                                                                                                                      "弱"),
+            'depth': language["info"]["run_depth"] % self.result["Body"]["Earthquake"]["Hypocenter"]["Depth"],
+            'max_intensity': f"{self.result['Body']['Intensity']['Observation']['MaxInt']}".
+                replace(f"+", f"{language['info']['intensity_strong']}").
+                replace("-", f"{language['info']['intensity_weak']}"),
             'intensity_pref_list': intensity_pref_list
         }
         eew_info = EewInfo(**eew_list)
         print(json.dumps(eew_info.intensity_pref_list))
         ctx = self.bot.get_channel(channel_id)
         await EmbedManager(ctx).generate(
-            embed_title='地震情報',
-            embed_description=f'{eew_info.headline}地域に関しては今後のメッセージを閲覧ください',
+            embed_title=f'{language["info"]["eew_info"]}',
+            embed_description=language["info"]["eew_headline"] % eew_info.headline,
             embed_content=[
-                {'title': '震央', 'value': f'{eew_info.epicenter}', 'option': {'inline': 'True'}},
-                {'title': 'マグニチュード', 'value': f'{eew_info.magnitude}', 'option': {'inline': 'True'}},
-                {'title': '深さ', 'value': f'{eew_info.depth}', 'option': {'inline': 'True'}},
-                {'title': '最大震度', 'value': f'{eew_info.max_intensity}', 'option': {'inline': 'True'}}
+                {'title': f'{language["word"]["epicenter"]}', 'value': f'{eew_info.epicenter}', 'option': {'inline': 'True'}},
+                {'title': f'{language["word"]["magnitude"]}', 'value': f'{eew_info.magnitude}', 'option': {'inline': 'True'}},
+                {'title': f'{language["word"]["depth"]}', 'value': f'{eew_info.depth}', 'option': {'inline': 'True'}},
+                {'title': f'{language["word"]["max_depth"]}', 'value': f'{eew_info.max_intensity}', 'option': {'inline': 'True'}}
             ],
             color=color,
             image=image
@@ -78,12 +83,12 @@ class EewSendChannel:
                 for intensity_pref_area_city in intensity_pref_area["City"]:
                     intensity_pref_area_city_list += f"{intensity_pref_area_city['Name']}, "
             await EmbedManager(ctx).generate(
-                embed_title='地震情報',
-                embed_description='地域に関しては今後のメッセージを閲覧ください',
+                embed_title=f'{language["info"]["eew_info"]}',
+                embed_description=f'{language["info"]["eew_headline"]}',
                 embed_content=[
-                    {'title': '震央', 'value': f'{intensity_pref["Name"]}', 'option': {'inline': 'True'}},
-                    {'title': '最大深度', 'value': f'{eew_info.magnitude}', 'option': {'inline': 'True'}},
-                    {'title': '周辺地域', 'value': f'{intensity_pref_area_city_list[:-1]}', 'option': {'inline': 'True'}},
+                    {'title': f'{language["word"]["epicenter"]}', 'value': f'{intensity_pref["Name"]}', 'option': {'inline': 'True'}},
+                    {'title': f'{language["word"]["max_depth"]}', 'value': f'{eew_info.magnitude}', 'option': {'inline': 'True'}},
+                    {'title': f'{language["word"]["surrounding_area"]}', 'value': f'{intensity_pref_area_city_list[:-1]}', 'option': {'inline': 'True'}},
                 ],
                 color=color).send()
 
@@ -94,7 +99,6 @@ class EewSendChannel:
         origin_time = origin_time.split(" ")
         time = origin_time[1].split(":")
         date = origin_time[0].split("-")
-
         details_url = (
             soup.find("record", {"date": f"{date[0]}年{date[1]}月{date[2]}日"})
                 .find("item", {"time": f"{time[0]}時{time[1]}分ごろ"})

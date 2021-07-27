@@ -1,0 +1,16 @@
+meta:
+  lang: "日本語"
+
+info:
+  eew_info: "地震情報"
+  eew_headline: "%s地域に関しては今後のメッセージを閲覧ください"
+  run_depth: "約%skm"
+  intensity_strong: "強"
+  intensity_weak: "弱"
+
+word:
+  epicenter: "震央"
+  magnitude: "マグニチュード"
+  depth: "深さ"
+  max_depth: "最大深度"
+  surrounding_area: "周辺地域"
