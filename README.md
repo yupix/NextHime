@@ -9,16 +9,22 @@
 [![Shields](https://img.shields.io/badge/Dev%20Python-3.9-ff7964.svg?style=for-the-badge)](https://img.shields.io/badge/Dev%20Python-3.9-ff7964.svg?style=for-the-badge)
 
 ## 概要
+
 このProjectは [SSM](https://github.com/yupix/ssm) の後継作です。 また、このProjectは[MPL2.0](LICENSE)ライセンスのもと配布または使用できます
 
+## 注意
+
+このProjectは[SSM](https://github.com/yupix/ssm)のファイルを断続的に整形、または新たに機能を追加したうえで少しずつファイルを追加しているため、多くの場合必要なファイルが存在しない場合があります。
+
 ## OS毎の依存関係
+
 ### ArchLinux | Zorin(Ubuntu)
 
 - libpq-dev
 - python3.9-dev # 3.9は使用しているバージョンによる
 - postgresql
 - git
-- base-devel
+- base-devel(必要ない可能性)
 
 ### Windows10 | Windows11
 
