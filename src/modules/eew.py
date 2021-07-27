@@ -7,7 +7,7 @@ import requests as requests
 
 from src.modules.embed_manager import EmbedManager
 
-with open(f"src/language/ja/eew/system.yml", encoding="utf-8") as f:
+with open("src/language/ja/eew/system.yml", encoding="utf-8") as f:
     language = yaml.safe_load(f)
 
 
@@ -57,8 +57,8 @@ class EewSendChannel:
             'magnitude': f'M{self.result["Body"]["Earthquake"]["Magnitude"]}',
             'depth': language["info"]["run_depth"] % self.result["Body"]["Earthquake"]["Hypocenter"]["Depth"],
             'max_intensity': f"{self.result['Body']['Intensity']['Observation']['MaxInt']}".
-                replace(f"+", f"{language['info']['intensity_strong']}").
-                replace("-", f"{language['info']['intensity_weak']}"),
+            replace("+", f"{language['info']['intensity_strong']}").
+            replace("-", f"{language['info']['intensity_weak']}"),
             'intensity_pref_list': intensity_pref_list
         }
         eew_info = EewInfo(**eew_list)
@@ -68,10 +68,14 @@ class EewSendChannel:
             embed_title=f'{language["info"]["eew_info"]}',
             embed_description=language["info"]["eew_headline"] % eew_info.headline,
             embed_content=[
-                {'title': f'{language["word"]["epicenter"]}', 'value': f'{eew_info.epicenter}', 'option': {'inline': 'True'}},
-                {'title': f'{language["word"]["magnitude"]}', 'value': f'{eew_info.magnitude}', 'option': {'inline': 'True'}},
-                {'title': f'{language["word"]["depth"]}', 'value': f'{eew_info.depth}', 'option': {'inline': 'True'}},
-                {'title': f'{language["word"]["max_depth"]}', 'value': f'{eew_info.max_intensity}', 'option': {'inline': 'True'}}
+                {'title': f'{language["word"]["epicenter"]}', 'value': f'{eew_info.epicenter}', 
+                    'option': {'inline': 'True'}},
+                {'title': f'{language["word"]["magnitude"]}', 'value': f'{eew_info.magnitude}', 
+                    'option': {'inline': 'True'}},
+                {'title': f'{language["word"]["depth"]}', 'value': f'{eew_info.depth}', 
+                    'option': {'inline': 'True'}},
+                {'title': f'{language["word"]["max_depth"]}', 'value': f'{eew_info.max_intensity}',
+                    'option': {'inline': 'True'}}
             ],
             color=color,
             image=image
@@ -86,9 +90,12 @@ class EewSendChannel:
                 embed_title=f'{language["info"]["eew_info"]}',
                 embed_description=f'{language["info"]["eew_headline"]}',
                 embed_content=[
-                    {'title': f'{language["word"]["epicenter"]}', 'value': f'{intensity_pref["Name"]}', 'option': {'inline': 'True'}},
-                    {'title': f'{language["word"]["max_depth"]}', 'value': f'{eew_info.magnitude}', 'option': {'inline': 'True'}},
-                    {'title': f'{language["word"]["surrounding_area"]}', 'value': f'{intensity_pref_area_city_list[:-1]}', 'option': {'inline': 'True'}},
+                    {'title': f'{language["word"]["epicenter"]}', 'value': f'{intensity_pref["Name"]}',
+                        'option': {'inline': 'True'}},
+                    {'title': f'{language["word"]["max_depth"]}', 'value': f'{eew_info.magnitude}',
+                        'option': {'inline': 'True'}},
+                    {'title': f'{language["word"]["surrounding_area"]}', 'value': f'{intensity_pref_area_city_list[:-1]}',
+                        'option': {'inline': 'True'}},
                 ],
                 color=color).send()
 
