@@ -68,11 +68,11 @@ class EewSendChannel:
             embed_title=f'{language["info"]["eew_info"]}',
             embed_description=language["info"]["eew_headline"] % eew_info.headline,
             embed_content=[
-                {'title': f'{language["word"]["epicenter"]}', 'value': f'{eew_info.epicenter}', 
+                {'title': f'{language["word"]["epicenter"]}', 'value': f'{eew_info.epicenter}',
                     'option': {'inline': 'True'}},
-                {'title': f'{language["word"]["magnitude"]}', 'value': f'{eew_info.magnitude}', 
+                {'title': f'{language["word"]["magnitude"]}', 'value': f'{eew_info.magnitude}',
                     'option': {'inline': 'True'}},
-                {'title': f'{language["word"]["depth"]}', 'value': f'{eew_info.depth}', 
+                {'title': f'{language["word"]["depth"]}', 'value': f'{eew_info.depth}',
                     'option': {'inline': 'True'}},
                 {'title': f'{language["word"]["max_depth"]}', 'value': f'{eew_info.max_intensity}',
                     'option': {'inline': 'True'}}
