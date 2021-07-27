@@ -1,11 +1,13 @@
 # 開発環境 =============>
-venv
 .kdev4
 .idea
 NextHime.kdev4
 
 # 設定ファイル =============>
+env
 .env
+venv
+.venv
 alembic.ini
 
 # 一時ファイルなど =============>
