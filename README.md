@@ -63,3 +63,9 @@ INTENTSの設定
 ## 開発者向け情報
 
 - このプロジェクトをPycharmなどのエミュレート端末で動作させるとinputtimeoutが正常に動作しない可能性があります。**この問題は通常の非エミュレート端末では発生しません**
+
+## ライセンス
+
+[サードパーティーライセンス](./src/3rdlisence.md)
+
+[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B18676%2Fgit%40github.com%3Ayupix%2FNextHime.git.svg?type=large)](https://app.fossa.com/projects/custom%2B18676%2Fgit%40github.com%3Ayupix%2FNextHime.git?ref=badge_large)
