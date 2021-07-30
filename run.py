@@ -1,4 +1,8 @@
 import asyncio
+from xtermcolor import colorize
+
+with open('src/assets/logo.txt') as logo:
+    print(colorize(logo.read(), ansi=0xAF))
 
 from NextHime.main import run
 
