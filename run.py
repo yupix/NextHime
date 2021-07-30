@@ -1,8 +1,8 @@
 import asyncio
-from xtermcolor import colorize
+from src.modules.color import Color
 
 with open('src/assets/logo.txt') as logo:
-    print(colorize(logo.read(), ansi=0xAF))
+    print(Color.PINK + logo.read())
 
 from NextHime.main import run
 
