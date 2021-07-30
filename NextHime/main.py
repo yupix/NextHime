@@ -15,7 +15,7 @@ from uvicorn import Config, Server
 
 from NextHime import logger, spinner, config
 from NextHime import system_language
-from src.modules.auto_migrate import AutoMigrate, RevisionIdentifiedError, TooFewArguments, AdaptingMigrateFilesError
+from src.modules.auto_migrate import AutoMigrate
 from src.modules.voice_generator import create_wave
 
 if config.api_discord_redirect_url and \
@@ -37,7 +37,8 @@ class API:
         app = FastAPI(title=f"{self.title}")
         app.include_router(discord_guild.index.router)
         app.include_router(auth.index.router)
-        app = VersionedFastAPI(app, version_format="{major}", prefix_format="/v{major}")
+        app = VersionedFastAPI(
+            app, version_format="{major}", prefix_format="/v{major}")
         return app
 
 
@@ -146,31 +147,22 @@ class NextHime(commands.Bot):
 
 
 async def migrate():
-    spinner.info(system_language['migrate']['action']['run_check']['message']['check'])
-    spinner.stop()
+    logger.info(system_language['migrate']['action']
+                ['run_check']['message']['check'])
     from inputimeout import inputimeout, TimeoutOccurred
 
     try:
         y_n = inputimeout(prompt=">>", timeout=int(config.input_timeout))
     except TimeoutOccurred:
-        logger.info(system_language['migrate']['action']['run_check']['message']['timeout'] % config.input_timeout)
+        logger.info(system_language['migrate']['action']['run_check']
+                    ['message']['timeout'] % config.input_timeout)
         y_n = "something"
+    except PermissionError:
+        logger.error('端末の操作ができません')
+        y_n = None
+
     if y_n == "y":
-        try:
-            spinner.start('')
-            AutoMigrate().generate()
-
-        except RevisionIdentifiedError:
-            logger.error(system_language['migrate']['error']['revision identified error']['message'])
-            sys.exit(1)
-
-        except TooFewArguments:
-            logger.error(system_language['migrate']['error']['too few arguments']['message'])
-            sys.exit(1)
-
-        except AdaptingMigrateFilesError:
-            logger.error(system_language['migrate']['error']['AdaptingMigrateFilesError']['message'])
-            sys.exit(1)
+        await AutoMigrate().generate().upgrade()
 
 
 async def bot_run(bot_loop):
@@ -187,7 +179,8 @@ async def api_run(loop1):
         allow_methods=['*'],
         allow_headers=['*'])
     asyncio.set_event_loop(loop1)
-    api_config = Config(app=app, host=f'{config.api_host}', loop=loop1, port=int(config.api_port), reload=True)
+    api_config = Config(app=app, host=f'{config.api_host}', loop=loop1, port=int(
+        config.api_port), reload=True)
     server = Server(api_config)
     await server.serve()
 
