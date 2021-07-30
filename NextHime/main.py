@@ -1,5 +1,4 @@
 import asyncio
-import sys
 import traceback
 from distutils.util import strtobool
 
