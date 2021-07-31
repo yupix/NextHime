@@ -43,7 +43,6 @@ class ConfigManager:
         self.config = config_ini
 
     def load(self):
-        print(self.config["DATABASE"]["User"])
         block_list = [
             'next_hime_bot_token',
             'next_hime_db_user',
