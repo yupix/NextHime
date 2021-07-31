@@ -9,7 +9,7 @@ class EmbedManager(object):
         self.ctx = ctx
         self.embed = None
 
-    def generate(self, embed_title: str = None, embed_description: str = None, mode: str = None,
+    def generate(self, embed_title: str = None, embed_description: str = '', mode: str = None,
                  color: int = 0x8BC34A, embed_content: list = [], image: str = None,
                  embed_thumbnail: str = None, ):
         """{'title': 'content', 'value': 'content', 'option': {'inline': 'False'}}"""
@@ -31,8 +31,8 @@ class EmbedManager(object):
             title = content.get("title", "タイトルが指定されていません")
             value = content.get("value", None)
             inline = content.get("option", {"inline": "True"}).get("inline")
-            print(f"{content['title']}, {content['value']}")
-            self.embed.add_field(name=title, value=value, inline=bool(strtobool(inline)))
+            self.embed.add_field(name=title, value=value,
+                                 inline=bool(strtobool(inline)))
         return self
 
     async def send(self, auto_delete: bool = False, sleep_time: int = None):
