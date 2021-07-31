@@ -1,6 +1,8 @@
+import datetime
+import time
 import traceback
 
-from NextHime import logger
+from NextHime import logger, config, start_time
 from NextHime.main import INITIAL_EXTENSIONS
 from discord.ext import commands
 from src.modules.embed_manager import EmbedManager
@@ -13,6 +15,14 @@ class BasicCog(commands.Cog):
     @commands.command()
     async def ping(self, ctx):
         await ctx.channel.send(f"ping: {round(self.bot.latency * 1000)}ms")
+
+    @commands.command()
+    async def status(self, ctx):
+        current_time = time.time()
+        difference_time = int(round(current_time - start_time))
+        uptime = str(datetime.timedelta(seconds=difference_time))
+        await EmbedManager(ctx).generate(embed_title=f"{config.user}のステータス",
+                                         embed_content=[{'title': '起動時間', 'value': f'{uptime}'}]).send()
 
     @commands.command(name="reload")
     @commands.is_owner()
