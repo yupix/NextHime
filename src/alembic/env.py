@@ -20,7 +20,6 @@ fileConfig(config.config_file_name)
 
 base_model_path = "src.sql.models"
 target_models = [
-    "src.sql.models.api",
     "src.sql.models.basic",
     "src.sql.models.blocklist",
     "src.sql.models.blog",
