@@ -26,7 +26,8 @@ if os.path.exists(".env") is True:
     load_dotenv(".env")
     tmp_logger.debug("VariableMode: .env")
 else:
-    tmp_logger.debug(".envが存在しません")
+    tmp_logger.info(".envが存在しません")
+    tmp_logger.warning("環境変数に定義されていない場合 config.iniを参照しますが、変更されていない場合プログラムは動作しません")
 
 config = configparser.ConfigParser(os.environ)
 config.read("./config.ini", encoding="utf-8")
