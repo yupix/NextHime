@@ -1,5 +1,4 @@
 import asyncio
-import re
 import traceback
 from distutils.util import strtobool
 
@@ -15,8 +14,9 @@ from uvicorn import Config, Server
 
 from NextHime import logger, spinner, config
 from NextHime import system_language
-from src.modules.color import Color
+from src.modules.NextHimeTools import NextHimeTools
 from src.modules.auto_migrate import AutoMigrate
+from src.modules.color import Color
 from src.modules.voice_generator import create_wave
 
 if config.api_discord_redirect_url and \
@@ -43,7 +43,7 @@ class API:
         return app
 
 
-bot:commands.Bot = commands.Bot(None)
+bot: commands.Bot = commands.Bot(None)
 slash_client = None
 
 """TODO: 下のやつをサポートする
@@ -127,18 +127,13 @@ class NextHime(commands.Bot):
     async def on_message(self, ctx):
         if bool(strtobool(config.log_show_bot)) is False and ctx.author.bot is True:
             return
-        mentions = re.findall(
-            "<@!(.*?)>", f"{ctx.content}") or re.findall("<@(.*?)>", f"{ctx.content}")
-        if mentions:
-            for mention in mentions:
-                user = str(self.get_user(int(mention)))
-                ctx.content = ctx.content.replace(
-                    f'<@!{mention}>', f'@{user}').replace(f'<@{mention}>', f'@{user}')
+        ctx.content = NextHimeTools(bot).check_msg_mentions(ctx).replace_msg_mention()
         try:
             logger.info(
                 f"[%sMSG | \x1B[0m%s{ctx.guild.name}\x1B[0m => \x1B[0m%s{ctx.channel.name}]\x1B[0m "
                 f"{ctx.author.name}: {ctx.content}, %sbot: %s {ctx.author.bot}" %
-                (Color().custom("36"), Color().custom("35"), Color().custom("34"), Color().custom("116"), Color().custom("117"))
+                (Color().custom("36"), Color().custom("35"),
+                 Color().custom("34"), Color().custom("116"), Color().custom("117"))
             )
         except AttributeError:
             logger.info(
