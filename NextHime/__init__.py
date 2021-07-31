@@ -2,6 +2,7 @@ import configparser
 import os
 from distutils.util import strtobool
 from logging import getLogger
+import time
 
 from dbmanager import DbManager
 from dotenv import load_dotenv
@@ -14,6 +15,8 @@ from src.modules.Config import ConfigManager
 from src.modules.create_logger import EasyLogger
 from src.modules.language_manager import LanguageManager
 
+start_time = time.time()
+
 Base = declarative_base()
 
 tmp_logger = getLogger("NextHime")
@@ -21,8 +24,9 @@ tmp_logger = EasyLogger(tmp_logger, logger_level="DEBUG").create()
 
 if os.path.exists(".env") is True:
     load_dotenv(".env")
+    tmp_logger.debug("VariableMode: .env")
 else:
-    tmp_logger.error(".envが存在しません")
+    tmp_logger.debug(".envが存在しません")
 
 config = configparser.ConfigParser(os.environ)
 config.read("./config.ini", encoding="utf-8")
