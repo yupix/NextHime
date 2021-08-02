@@ -1,16 +1,16 @@
 import configparser
 import os
-from distutils.util import strtobool
-from logging import getLogger
 import time
 
+from redis import Redis
+from distutils.util import strtobool
+from logging import getLogger
 from dbmanager import DbManager
 from dotenv import load_dotenv
 from halo import Halo
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
 from src.modules.Config import HimeConfig
 from src.modules.create_logger import EasyLogger
 from src.modules.language_manager import LanguageManager
@@ -41,6 +41,8 @@ config = HimeConfig(config_ini)
 system_language = LanguageManager(
     base_path="./src/language/", lang=f"{config.options.lang}", module_name="system/info.yml"
 ).get()
+
+redis_conn = Redis(host='localhost', port=6379)
 
 engine = create_engine(
     f"postgresql://{config.db.user}:{config.db.password}@{config.db.host}:{config.db.port}/{config.db.database}",
