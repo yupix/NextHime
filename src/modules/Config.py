@@ -1,67 +1,72 @@
-import dataclasses
+class HimeConfig(object):
+    def __init__(self, config_dict):
+        self.bot = self.Bot(config_dict)
+        self.db = self.DB(config_dict)
+        self.redis = self.Redis(config_dict)
+        self.api = self.API(config_dict)
+        self.eew = self.EEW(config_dict)
+        self.jtalk = self.JTALK(config_dict)
+        self.options = self.OPTIONS(config_dict)
+        self.sentry = self.SENTRY(config_dict)
 
+    class Bot(object):
+        def __init__(self, config_dict):
+            self.name: str = config_dict['BOT']['name']
+            self.prefix: str = config_dict['BOT']['prefix']
+            self.token: str = config_dict['BOT']['token']
 
-@dataclasses.dataclass
-class HimeConfig:
-    user: str
-    prefix: str
-    token: str
-    log_level: str
-    lang: str
-    auto_migrate: bool
-    input_timeout: int
-    db_user: str
-    db_port: int
-    db_host: str
-    db_password: str
-    db_database: str
-    api_use: bool
-    api_host: str
-    api_port: int
-    api_discord_client: str
-    api_discord_client_secret: str
-    api_discord_callback_url: str
-    api_discord_redirect_url: str
-    eew_use: bool
-    blog_role: str
-    jtalk_dic_path: str
-    jtalk_voice_path: str
-    jtalk_bin_path: str
-    jtalk_output_wav_name: str
-    jtalk_speed: int
-    jtalk_aloud: bool
-    log_show_bot: bool
-    log_show_commit: bool
-    log_force_show_commit: bool
-    sentry_use: bool
-    sentry_dsn: str
-    reset_status: int
+    class DB(object):
+        def __init__(self, config_dict):
+            self.user: str = config_dict['DB']['user']
+            self.port: int = config_dict['DB']['port']
+            self.host: str = config_dict['DB']['host']
+            self.password: str = config_dict['DB']['password']
+            self.database: str = config_dict['DB']['database']
+            self.auto_migrate: bool = config_dict['DB']['auto_migrate']
 
+    class Redis(object):
+        def __init__(self, config_dict):
+            self.host: str = config_dict['REDIS']['host']
+            self.port: int = config_dict['REDIS']['port']
+            self.db: dict = config_dict['REDIS']['db']
 
-class ConfigManager:
-    def __init__(self, config_ini):
-        self.config = config_ini
+    class API(object):
+        def __init__(self, config_dict):
+            self.use: bool = config_dict['API']['use']
+            self.host: str = config_dict['API']['host']
+            self.port: int = config_dict['API']['port']
+            self.discord_client: str = config_dict['API']['discord_client']
+            self.discord_client_secret: str = config_dict['API']['discord_client_secret']
+            self.discord_callback_url: str = config_dict['API']['discord_callback_url']
+            self.discord_redirect_url: str = config_dict['API']['discord_redirect_url']
 
-    def load(self):
-        block_list = [
-            'next_hime_bot_token',
-            'next_hime_db_user',
-            'next_hime_db_password',
-            'next_hime_db_host',
-            'next_hime_jtalk_dic_path',
-            'next_hime_voice_path',
-            'next_hime_jtalk_bin_path',
-            'next_hime_sentry_dsn',
-            'next_hime_api_host',
-            'next_hime_discord_client',
-            'next_hime_discord_client_secret',
-            'next_hime_discord_callback_url',
-            'next_hime_discord_redirect_url',
-        ]
-        hit_list = {}
-        for section in self.config.keys():
-            for section_key in self.config[f'{section}']:
-                if section_key not in block_list:
-                    hit_list[section_key] = self.config[f'{section}'][f'{section_key}']
-        config = HimeConfig(**hit_list)
-        return config
+    class EEW(object):
+        def __init__(self, config_dict):
+            self.use: bool = config_dict['EEW']['use']
+
+    class JTALK(object):
+        def __init__(self, config_dict):
+            self.dic_path: str = config_dict['JTALK']['dic_path']
+            self.voice_path: str = config_dict['JTALK']['voice_path']
+            self.bin_path: str = config_dict['JTALK']['bin_path']
+            self.output_wav_name: str = config_dict['JTALK']['output_wav_name']
+            self.speed: int = config_dict['JTALK']['speed']
+            self.aloud: bool = config_dict['JTALK']['aloud']
+
+    class OPTIONS(object):
+        def __init__(self, config_dict):
+            self.log_level: str = config_dict['OPTIONS']['log_level']
+            self.lang: str = config_dict['OPTIONS']['lang']
+            self.input_timeout: int = config_dict['OPTIONS']['input_timeout']
+            self.log_show_bot: bool = config_dict['OPTIONS']['log_show_bot']
+            self.log_show_commit: bool = config_dict['OPTIONS']['log_show_commit']
+            self.log_force_show_commit: bool = config_dict['OPTIONS']['log_force_show_commit']
+
+    class BLOG(object):
+        def __init__(self, config_dict):
+            self.role: str = config_dict['BLOG']['blogger_role']
+
+    class SENTRY(object):
+        def __init__(self, config_dict):
+            self.sentry_use: bool = config_dict['ADVANCED']['sentry_use']
+            self.sentry_dsn: str = config_dict['ADVANCED']['sentry_dsn']

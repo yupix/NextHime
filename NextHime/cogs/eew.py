@@ -51,7 +51,7 @@ class EewCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        if bool(strtobool(config.eew_use)) is True:
+        if bool(strtobool(config.eew.use)) is True:
             await self.bot_eew_loop.start()
 
 

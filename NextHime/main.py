@@ -19,12 +19,12 @@ from src.modules.auto_migrate import AutoMigrate
 from src.modules.color import Color
 from src.modules.voice_generator import create_wave
 
-if config.api_discord_redirect_url and \
-        config.api_discord_callback_url and \
-        config.api_discord_client and \
-        config.api_discord_client_secret:
-    discord_auth = DiscordOAuthClient(f'{config.api_discord_client}', f'{config.api_discord_client_secret}',
-                                      f'{config.api_discord_callback_url}',
+if config.api.discord_redirect_url and \
+        config.api.discord_callback_url and \
+        config.api.discord_client and \
+        config.api.discord_client_secret:
+    discord_auth = DiscordOAuthClient(f'{config.api.discord_client}', f'{config.api.discord_client_secret}',
+                                      f'{config.api.discord_callback_url}',
                                       ('identify', 'guilds', 'email'))  # scopes
 
 
@@ -125,7 +125,7 @@ class NextHime(commands.Bot):
 """)
 
     async def on_message(self, ctx):
-        if bool(strtobool(config.log_show_bot)) is False and ctx.author.bot is True:
+        if bool(strtobool(config.options.log_show_bot)) is False and ctx.author.bot is True:
             return
         ctx.content = NextHimeTools(bot).check_msg_mentions(ctx).replace_msg_mention()
         try:
@@ -149,9 +149,9 @@ class NextHime(commands.Bot):
             self.voice_clients, guild=ctx.guild
         )
 
-        if bool(strtobool(config.jtalk_aloud)) is True and check_voice_channel is not None:
+        if bool(strtobool(config.jtalk.aloud)) is True and check_voice_channel is not None:
             create_wave(f"{ctx.content}")
-            source = discord.FFmpegPCMAudio(f"{config.jtalk_output_wav_name}")
+            source = discord.FFmpegPCMAudio(f"{config.jtalk.output_wav_name}")
             try:
                 ctx.guild.voice_client.play(source)
             except AttributeError:
@@ -165,10 +165,10 @@ async def migrate():
     from inputimeout import inputimeout, TimeoutOccurred
 
     try:
-        y_n = inputimeout(prompt=">>", timeout=int(config.input_timeout))
+        y_n = inputimeout(prompt=">>", timeout=int(config.options.input_timeout))
     except TimeoutOccurred:
         logger.info(system_language['migrate']['action']['run_check']
-                    ['message']['timeout'] % config.input_timeout)
+                    ['message']['timeout'] % config.options.input_timeout)
         y_n = "something"
     except PermissionError:
         logger.error('端末の操作ができません')
@@ -180,7 +180,7 @@ async def migrate():
 
 async def bot_run(bot_loop):
     asyncio.set_event_loop(bot_loop)
-    await bot.start(f"{config.token}")
+    await bot.start(f"{config.bot.token}")
 
 
 async def api_run(loop1):
@@ -201,12 +201,12 @@ async def api_run(loop1):
 def run(loop_bot, loop_api):
     global bot
     global slash_client
-    if bool(strtobool(config.auto_migrate)):
+    if bool(strtobool(config.db.auto_migrate)):
         asyncio.run(migrate())
     asyncio.set_event_loop(loop_bot)
     intents = discord.Intents.all()
-    bot = NextHime(command_prefix=f"{config.prefix}", intents=intents)
-    if bool(strtobool(config.api_use)) is True:
+    bot = NextHime(command_prefix=f"{config.bot.prefix}", intents=intents)
+    if bool(strtobool(config.api.use)) is True:
         future = asyncio.gather(bot_run(loop_bot), api_run(loop_api))
     else:
         future = asyncio.gather(bot_run(loop_bot))
