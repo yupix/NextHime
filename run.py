@@ -2,7 +2,7 @@ import asyncio
 from src.modules.color import Color
 
 with open('src/assets/logo.txt') as logo:
-    print(Color.PINK + logo.read())
+    print(Color().pink + logo.read())
 
 from NextHime.main import run
 
