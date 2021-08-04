@@ -109,7 +109,6 @@ class NextHime(commands.Bot):
                 traceback.print_exc()
 
     async def on_ready(self):
-        spinner.stop()
         name_length = len(self.user.name)
         id_length = len(str(self.user.id))
         if name_length >= id_length:
@@ -128,18 +127,19 @@ class NextHime(commands.Bot):
         if bool(strtobool(config.options.log_show_bot)) is False and ctx.author.bot is True:
             return
         ctx.content = NextHimeTools(bot).check_msg_mentions(ctx).replace_msg_mention()
+        color = Color()
         try:
             logger.info(
-                f"[%sMSG | \x1B[0m%s{ctx.guild.name}\x1B[0m => \x1B[0m%s{ctx.channel.name}]\x1B[0m "
-                f"{ctx.author.name}: {ctx.content}, %sbot: %s {ctx.author.bot}" %
-                (Color().custom("36"), Color().custom("35"),
-                 Color().custom("34"), Color().custom("116"), Color().custom("117"))
+                f'{color.custom("48")}[%sMSG {color.white}| \x1B[0m%s{ctx.guild.name}\x1B[0m {color.white}=> \x1B[0m%s'
+                f'{ctx.channel.name}{color.custom("48")}]\x1B[0m '
+                f'{color.white}{ctx.author.name}: {ctx.content}, %sbot: %s {ctx.author.bot}' %
+                (color.custom("154"), color.custom("35"), color.custom("34"), color.custom("116"), color.custom("117"))
             )
         except AttributeError:
             logger.info(
-                f"[%sDM | \x1B[0m%s{ctx.author.name}: {ctx.content}, %sbot: %s{ctx.author.bot}" %
-                (Color().custom("36"), Color().custom("35"),
-                 Color().custom("116"), Color().custom("117"))
+                f'{color.custom("48")}[%sDM {color.white}| \x1B[0m{color.white}{ctx.author.name}: {ctx.content}, '
+                f'%sbot: %s{ctx.author.bot}' %
+                (Color().custom("36"), Color().custom("116"), Color().custom("117"))
             )
 
         if ctx.embeds:
