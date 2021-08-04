@@ -32,7 +32,6 @@ else:
 config = configparser.ConfigParser(os.environ)
 config.read("./config.ini", encoding="utf-8")
 
-os.environ.clear()
 load_dotenv()
 config_ini = configparser.ConfigParser(os.environ)
 config_ini.read("./config.ini", encoding="utf-8")
