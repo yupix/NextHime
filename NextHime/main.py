@@ -55,7 +55,7 @@ slash_client = None
     "NextHime.cogs.basic",
 """
 
-INITIAL_EXTENSIONS = ["NextHime.cogs.eew", "NextHime.cogs.basic"]
+INITIAL_EXTENSIONS = ["NextHime.cogs.eew", "NextHime.cogs.basic", "NextHime.cogs.warframe"]
 
 
 def translator(content):
