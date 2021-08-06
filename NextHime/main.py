@@ -14,7 +14,7 @@ from uvicorn import Config, Server
 
 from NextHime import logger, spinner, config
 from NextHime import system_language
-from src.modules.NextHimeTools import NextHimeTools
+from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.auto_migrate import AutoMigrate
 from src.modules.color import Color
 from src.modules.voice_generator import create_wave
@@ -126,7 +126,7 @@ class NextHime(commands.Bot):
     async def on_message(self, ctx):
         if bool(strtobool(config.options.log_show_bot)) is False and ctx.author.bot is True:
             return
-        ctx.content = NextHimeTools(bot).check_msg_mentions(ctx).replace_msg_mention()
+        ctx.content = NextHimeUtils(bot).check_msg_mentions(ctx).replace_msg_mention()
         color = Color()
         try:
             logger.info(
