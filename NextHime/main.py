@@ -12,7 +12,7 @@ from googletrans import Translator
 from starlette.middleware.cors import CORSMiddleware
 from uvicorn import Config, Server
 
-from NextHime import logger, spinner, config
+from NextHime import logger, config
 from NextHime import system_language
 from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.auto_migrate import AutoMigrate
