@@ -56,7 +56,7 @@ slash_client = None
     "NextHime.cogs.basic",
 """
 
-INITIAL_EXTENSIONS = ["NextHime.cogs.eew", "NextHime.cogs.basic", "NextHime.cogs.warframe"]
+INITIAL_EXTENSIONS = ["NextHime.cogs.eew", "NextHime.cogs.basic", "NextHime.cogs.warframe", "NextHime.cogs.read"]
 
 
 def translator(content):
@@ -149,13 +149,16 @@ class NextHime(commands.Bot):
             self.voice_clients, guild=ctx.guild
         )
 
-        if bool(strtobool(config.jtalk.aloud)) is True and check_voice_channel is not None:
+        if config.jtalk.aloud and check_voice_channel is not None:
             create_wave(f"{ctx.content}")
-            source = discord.FFmpegPCMAudio(f"{config.jtalk.output_wav_name}")
-            try:
-                ctx.guild.voice_client.play(source)
-            except AttributeError:
-                pass
+            while True:
+                source = discord.FFmpegPCMAudio(f"{config.jtalk.output_wav_name}")
+                if ctx.guild.voice_client.is_playing() is False:
+                    try:
+                        ctx.guild.voice_client.play(source)
+                        break
+                    except AttributeError:
+                        break
         await self.process_commands(ctx)  # コマンド動作用
 
 
