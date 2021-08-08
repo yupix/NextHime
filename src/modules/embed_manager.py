@@ -5,7 +5,7 @@ import discord
 
 
 class EmbedManager(object):
-    def __init__(self, ctx, embed_color: int = 0x8BC34A):
+    def __init__(self, ctx):
         self.ctx = ctx
         self.embed = None
 
