@@ -17,6 +17,7 @@ from NextHime import system_language
 from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.auto_migrate import AutoMigrate
 from src.modules.color import Color
+from src.modules.embed_manager import EmbedManager
 from src.modules.voice_generator import create_wave
 
 if config.api.discord_redirect_url and \
@@ -142,9 +143,8 @@ class NextHime(commands.Bot):
                 (Color().custom("36"), Color().custom("116"), Color().custom("117"))
             )
 
-        if ctx.embeds:
-            for embed in ctx.embeds:
-                logger.info(embed.to_dict())
+        await EmbedManager(ctx).parse_to_print(logger)
+
         check_voice_channel = discord.utils.get(
             self.voice_clients, guild=ctx.guild
         )

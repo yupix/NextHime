@@ -1,4 +1,5 @@
 import asyncio
+import json
 from distutils.util import strtobool
 
 import discord
@@ -8,6 +9,11 @@ class EmbedManager(object):
     def __init__(self, ctx):
         self.ctx = ctx
         self.embed = None
+
+    async def parse_to_print(self, logger):
+        if self.ctx.embeds:
+            for embed in self.ctx.embeds:
+                logger.info(json.dumps(embed.to_dict(), indent=2))
 
     def generate(self, embed_title: str = None, embed_description: str = '', mode: str = None,
                  color: int = 0x8BC34A, embed_content: list = [], image: str = None,
