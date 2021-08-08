@@ -1,3 +1,6 @@
+from src.modules.NextHimeUtils import NextHimeUtils
+
+
 class HimeConfig(object):
     def __init__(self, config_dict):
         self.bot = self.Bot(config_dict)
@@ -49,7 +52,7 @@ class HimeConfig(object):
             self.dic_path: str = config_dict['JTALK']['dic_path']
             self.voice_path: str = config_dict['JTALK']['voice_path']
             self.bin_path: str = config_dict['JTALK']['bin_path']
-            self.output_wav_name: str = config_dict['JTALK']['output_wav_name']
+            self.output_wav_name: str = NextHimeUtils().temp_path + config_dict['JTALK']['output_wav_name']
             self.speed: int = config_dict['JTALK']['speed']
             self.aloud: bool = config_dict['JTALK']['aloud']
 
