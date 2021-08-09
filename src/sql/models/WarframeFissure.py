@@ -58,6 +58,12 @@ class WarframeFissuresChannel(Base):
         lazy="dynamic",
         cascade="all, delete-orphan",
     )
+    region = Column(
+        VARCHAR(255),
+        ForeignKey(
+            "guilds.region", onupdate="CASCADE", ondelete="CASCADE"
+        ), unique=True
+    )
 
 
 class WarframeFissuresMessage(Base):
