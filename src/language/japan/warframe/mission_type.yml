@@ -1,0 +1,18 @@
+meta:
+  lang: "日本語"
+
+MissionType:
+  "Spy": "潜入"
+  "Capture": "確保"
+  "Survival": "耐久"
+  "Sabotage": "妨害"
+  "Defense": "防衛"
+  "Extermination": "殲滅"
+  "Rescue": "救出"
+  "Interception": "傍受"
+  "Mobile Defense": "機動防衛"
+  "Excavation": "発掘"
+  "Disruption": "分裂"
+  "Hijack": "ハイジャック"
+  "Assault": "突撃"
+  "Skirmish": "小戦"
