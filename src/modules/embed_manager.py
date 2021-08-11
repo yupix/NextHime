@@ -39,19 +39,18 @@ class EmbedManager(object):
             {'title': 'タイトル文', 'value': '内容'}をリストに複数登録することでEmbedに複数要素を登録する
         image: str
             URLを受け取りEmbedに画像を追加
-        embed_thumbnail:
+        embed_thumbnail: str
             URLを受け取りEmbedにアイコンのような小さい画像を追加
-
         Returns
         -------
-        EmbedManager
+        self : EmbedManager
+            Embedが生成されたクラスを返します
         """
         if mode is not None:
             if mode == "succeed":
                 color = 0x8BC34A
             elif mode == "failed":
                 color = 0xD32F2F
-
         self.embed = discord.Embed(
             title=embed_title, description=embed_description, color=color
         )
