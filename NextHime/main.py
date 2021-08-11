@@ -12,11 +12,12 @@ from googletrans import Translator
 from starlette.middleware.cors import CORSMiddleware
 from uvicorn import Config, Server
 
-from NextHime import logger, spinner, config
+from NextHime import logger, config
 from NextHime import system_language
-from src.modules.NextHimeTools import NextHimeTools
+from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.auto_migrate import AutoMigrate
 from src.modules.color import Color
+from src.modules.embed_manager import EmbedManager
 from src.modules.voice_generator import create_wave
 
 if config.api.discord_redirect_url and \
@@ -55,7 +56,7 @@ slash_client = None
     "NextHime.cogs.basic",
 """
 
-INITIAL_EXTENSIONS = ["NextHime.cogs.eew", "NextHime.cogs.basic"]
+INITIAL_EXTENSIONS = ["NextHime.cogs.eew", "NextHime.cogs.basic", "NextHime.cogs.warframe", "NextHime.cogs.read"]
 
 
 def translator(content):
@@ -126,7 +127,7 @@ class NextHime(commands.Bot):
     async def on_message(self, ctx):
         if bool(strtobool(config.options.log_show_bot)) is False and ctx.author.bot is True:
             return
-        ctx.content = NextHimeTools(bot).check_msg_mentions(ctx).replace_msg_mention()
+        ctx.content = NextHimeUtils(bot).check_msg_mentions(ctx).replace_msg_mention()
         color = Color()
         try:
             logger.info(
@@ -142,20 +143,22 @@ class NextHime(commands.Bot):
                 (Color().custom("36"), Color().custom("116"), Color().custom("117"))
             )
 
-        if ctx.embeds:
-            for embed in ctx.embeds:
-                logger.info(embed.to_dict())
+        await EmbedManager(ctx).parse_to_print(logger)
+
         check_voice_channel = discord.utils.get(
             self.voice_clients, guild=ctx.guild
         )
 
-        if bool(strtobool(config.jtalk.aloud)) is True and check_voice_channel is not None:
+        if config.jtalk.aloud and check_voice_channel is not None:
             create_wave(f"{ctx.content}")
-            source = discord.FFmpegPCMAudio(f"{config.jtalk.output_wav_name}")
-            try:
-                ctx.guild.voice_client.play(source)
-            except AttributeError:
-                pass
+            while True:
+                source = discord.FFmpegPCMAudio(f"{config.jtalk.output_wav_name}")
+                if ctx.guild.voice_client.is_playing() is False:
+                    try:
+                        ctx.guild.voice_client.play(source)
+                        break
+                    except AttributeError:
+                        break
         await self.process_commands(ctx)  # コマンド動作用
 
 

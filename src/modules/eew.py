@@ -2,16 +2,14 @@ import json
 
 import yaml
 from bs4 import BeautifulSoup as bs4
-import dataclasses
 import requests as requests
 
 from src.modules.embed_manager import EmbedManager
 
-with open("src/language/ja/eew/system.yml", encoding="utf-8") as f:
+with open("src/language/japan/eew/system.yml", encoding="utf-8") as f:
     language = yaml.safe_load(f)
 
 
-@dataclasses.dataclass
 class EewInfo:
     headline: list
     epicenter: str

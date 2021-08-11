@@ -1,0 +1,2 @@
+class MissionTypeKeyError(Exception):
+    pass

@@ -1,0 +1,18 @@
+meta:
+  lang: "English"
+
+MissionType:
+  "Spy": "Spy"
+  "Capture": "Capture"
+  "Survival": "Survival"
+  "Sabotage": "Sabotage"
+  "Defense": "Defense"
+  "Extermination": "Extermination"
+  "Rescue": "Rescue"
+  "Interception": "Interception"
+  "Mobile Defense": "Mobile"
+  "Excavation": "Excavation"
+  "Disruption": "Disruption"
+  "Hijack": "Hijack"
+  "Assault": "Assault"
+  "Skirmish": "Skirmish"
