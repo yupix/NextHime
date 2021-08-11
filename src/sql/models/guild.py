@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, BIGINT, String, UniqueConstraint, VARCHAR
+from sqlalchemy import Column, BIGINT, VARCHAR
 from sqlalchemy.orm import relationship
 
 from NextHime import Base
@@ -14,4 +14,3 @@ class Guilds(Base):
         lazy="dynamic",
         cascade="all, delete-orphan",
     )
-

@@ -19,7 +19,8 @@ class WarframeFissure:
         WarframeFissure:
             クラス自身を返却
         """
-        tier_int_list = {"1": "Lith", "2": "Meso", "3": "Neo", "4": "Axi", "5": "Requiem"}
+        tier_int_list = {"1": "Lith", "2": "Meso",
+                         "3": "Neo", "4": "Axi", "5": "Requiem"}
         self.id: str = fissure_dict['id']
         self.activation: str = fissure_dict['activation']
         self.startString: str = fissure_dict['startString']
@@ -31,7 +32,8 @@ class WarframeFissure:
         self.enemy: str = fissure_dict['enemy']
         self.enemyKey: str = fissure_dict['enemyKey']
         self.nodeKey: str = fissure_dict['nodeKey']
-        self.tier: int = int([key for key, value in tier_int_list.items() if value == fissure_dict['tier']][0])
+        self.tier: int = int(
+            [key for key, value in tier_int_list.items() if value == fissure_dict['tier']][0])
         self.tierInt: str = fissure_dict['tier']
         self.tierNum: int = int(fissure_dict['tierNum'])
         self.expired: bool = bool(fissure_dict['expired'])
@@ -96,8 +98,10 @@ class WarframeChannels(object):
                 channel = self.bot.get_channel(channel.channel_id)
                 await EmbedManager(channel).generate(self.fissure.node, f'ミッション内容: {temp_fissure.missionType}',
                                                      embed_content=[{'title': '出現エネミー', 'value': f'{self.fissure.enemy}'},
-                                                                    {'title': 'レリック', 'value': f'{self.fissure.tier}'},
-                                                                    {'title': '終了まで', 'value': f'{self.fissure.eta}'}
+                                                                    {'title': 'レリック',
+                                                                        'value': f'{self.fissure.tier}'},
+                                                                    {'title': '終了まで',
+                                                                        'value': f'{self.fissure.eta}'}
                                                                     ]).send()
             except MissionTypeKeyError:
                 channel = self.bot.get_channel(channel.channel_id)
@@ -106,4 +110,3 @@ class WarframeChannels(object):
                                                                         f'はお使いの言語でサポートされていないようです。'
                                                                         f'サポートにお問い合わせください',
                                                      mode='failed').send()
-
