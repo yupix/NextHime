@@ -1,6 +1,7 @@
 import asyncio
 import traceback
 from distutils.util import strtobool
+import alfakana
 
 import discord
 from discord.ext import commands
@@ -8,7 +9,6 @@ from discord_slash import SlashCommand
 from fastapi import FastAPI
 from fastapi_discord import DiscordOAuthClient
 from fastapi_versioning import VersionedFastAPI
-from googletrans import Translator
 from starlette.middleware.cors import CORSMiddleware
 from uvicorn import Config, Server
 
@@ -57,13 +57,6 @@ slash_client = None
 """
 
 INITIAL_EXTENSIONS = ["NextHime.cogs.eew", "NextHime.cogs.basic", "NextHime.cogs.warframe", "NextHime.cogs.read"]
-
-
-def translator(content):
-    tr = Translator()
-    result = tr.translate(text=f"{content}", src="en", dest="ja").text
-
-    return result
 
 
 def add_list(hit, key, args_list):
@@ -150,7 +143,7 @@ class NextHime(commands.Bot):
         )
 
         if config.jtalk.aloud and check_voice_channel is not None:
-            create_wave(f"{ctx.content}")
+            create_wave(f"{alfakana.sentence_kana(f'{ctx.author.name}さんからのメッセージ {ctx.content}', './dic.db')}")
             while True:
                 source = discord.FFmpegPCMAudio(f"{config.jtalk.output_wav_name}")
                 if ctx.guild.voice_client.is_playing() is False:
