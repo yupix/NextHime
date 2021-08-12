@@ -1,4 +1,5 @@
 import datetime
+import random
 import time
 import traceback
 
@@ -40,6 +41,9 @@ class BasicCog(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await EmbedManager(ctx).generate(mode='succeed', embed_title="エラー", embed_description="このコマンドはBotの所有者のみが実行できます")
 
+    @commands.command(name="random")
+    async def random(self, ctx):
+        await ctx.send(random.randint(1, 10))
 
 def setup(bot):
     bot.add_cog(BasicCog(bot))
