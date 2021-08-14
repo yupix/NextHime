@@ -1,0 +1,32 @@
+meta:
+  lang: English
+
+system:
+  account_name: Account Name
+  account_id: Account Id
+  login_success: Login Successful
+
+logger:
+  init_success: Init Successful
+
+migrate:
+  run:
+    check: AutoMigrate(α) 自動Migrate(α)を実行しますか? y または n
+    run: 現在実行中です
+    timeout: タイムアウト設定の%s秒を経過したため実行しません。
+
+  error:
+    revision identified error:
+      name: revision identified error
+      message: データベースのバージョン管理システムとの整合性が損なわれています。再度実行し問題が修正されない場合は作者へご連絡ください
+    unable_operate_terminal:
+      name: Unable to operate the terminal
+      message: The terminal could not be operated, typically this error occurs when using a virtual terminal.
+
+    too few arguments:
+      name: too few arguments
+      message: 引数が無効です\n再度実行し問題が修正されない場合はバグですので、作者へご連絡ください。
+
+    AdaptingMigrateFilesError:
+      name: Adapting Migrate Files Error
+      message: migrateファイルの適応に失敗しました

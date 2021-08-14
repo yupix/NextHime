@@ -1,0 +1,34 @@
+meta:
+  lang: 日本語
+
+system:
+  account_name: アカウント名
+  account_id: アカウントID
+  login_success: ログインに成功しました
+  unable_operate_terminal: 端末の操作ができません
+
+logger:
+  init_success: 初期化に成功しました
+
+migrate:
+  run:
+    check: 自動Migrate(α)を実行しますか? y または n
+    run: 現在実行中です
+    timeout: タイムアウト設定の%s秒を経過したため実行しません。
+  error:
+    unable_operate_terminal:
+      name: 端末の操作ができません
+      message: 一般的にこのエラーは仮想ターミナルを使用している場合に発生します。
+
+eew:
+  word:
+    epicenter: 震央
+    magnitude: マグニチュード
+    depth: 深さ
+    max_depth: 最大深度
+    surrounding_area: 周辺地域
+    intensity_strong: 強
+    intensity_weak: 弱
+    run_depth: 約%skm
+    info: 地震情報
+    headline: "%s地域に関しては今後のメッセージを閲覧ください"

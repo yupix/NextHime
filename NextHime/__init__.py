@@ -1,6 +1,7 @@
 import configparser
 import os
 import time
+import i18n
 
 from redis import Redis
 from distutils.util import strtobool
@@ -37,9 +38,8 @@ config_ini = configparser.ConfigParser(os.environ)
 config_ini.read("./config.ini", encoding="utf-8")
 config = HimeConfig(config_ini)
 
-system_language = LanguageManager(
-    base_path="./src/language/", lang=f"{config.options.lang}", module_name="system/info.yml"
-).get()
+i18n.load_path.append('./src/language')
+i18n.set("skip_locale_root_data", True)
 
 redis_conn = Redis(host='localhost', port=6379)
 
@@ -60,7 +60,7 @@ session = Session()
 # loggerオブジェクトの宣言
 logger = getLogger("main")
 logger = EasyLogger(logger, logger_level=f"{config.options.log_level}").create()
-spinner = Halo(text=f"{system_language['logger']['init_success']}", spinner="dots")
+spinner = Halo(text=f"{i18n.t('message.logger.init_success', locale=config.options.lang)}", spinner="dots")
 spinner.start()
 db_manager = DbManager(
     session=session,

@@ -2,8 +2,9 @@ import asyncio
 import traceback
 from distutils.util import strtobool
 import alfakana
-
 import discord
+import i18n
+
 from discord.ext import commands
 from discord_slash import SlashCommand
 from fastapi import FastAPI
@@ -13,7 +14,6 @@ from starlette.middleware.cors import CORSMiddleware
 from uvicorn import Config, Server
 
 from NextHime import logger, config
-from NextHime import system_language
 from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.auto_migrate import AutoMigrate
 from src.modules.color import Color
@@ -56,37 +56,8 @@ slash_client = None
     "NextHime.cogs.basic",
 """
 
-INITIAL_EXTENSIONS = ["NextHime.cogs.eew", "NextHime.cogs.basic", "NextHime.cogs.warframe", "NextHime.cogs.read"]
-
-
-def add_list(hit, key, args_list):
-    if hit is not None:
-        args_list[f"{hit}"] = key
-        hit = None
-        return hit, args_list
-    else:
-        hit = key
-        return hit, args_list
-
-
-def check_args(argument):
-    split_argument = argument.lower().split(" ")
-    hit = None
-    args_list = {}
-    for i in split_argument:
-        if (
-                i == "--type"
-                or i == "--max"
-                or i == "-c"
-                or i == "--register"
-                or i == "--translate"
-                or hit is not None
-        ):
-            hit, args_list = add_list(hit, i, args_list)
-    logger.debug(hit)
-    if hit is not None:
-        return "1", f"{i}には引数が必要です"
-    return args_list
+INITIAL_EXTENSIONS = ["NextHime.cogs.eew", "NextHime.cogs.basic",
+                      "NextHime.cogs.warframe", "NextHime.cogs.read"]
 
 
 class NextHime(commands.Bot):
@@ -110,24 +81,26 @@ class NextHime(commands.Bot):
         else:
             length = id_length
         equal = '=' * length
-        print(f"""\033[32mログインに成功しました\033[0m
+        print(f"""\033[32m{i18n.t('message.system.login_success', locale=config.options.lang)}\033[0m
 #=========={equal}#
-\033[1mアカウント名\033[0m: \033[34m{self.user.name}\033[0m
-\033[1mアカウントID\033[0m: \033[34m{self.user.id}\033[0m
+\033[1m{i18n.t('message.system.account_name', locale=config.options.lang)}\033[0m: \033[34m{self.user.name}\033[0m
+\033[1m{i18n.t('message.system.account_id', locale=config.options.lang)}\033[0m: \033[34m{self.user.id}\033[0m
 #=========={equal}#
 """)
 
     async def on_message(self, ctx):
         if bool(strtobool(config.options.log_show_bot)) is False and ctx.author.bot is True:
             return
-        ctx.content = NextHimeUtils(bot).check_msg_mentions(ctx).replace_msg_mention()
+        ctx.content = NextHimeUtils(bot).check_msg_mentions(
+            ctx).replace_msg_mention()
         color = Color()
         try:
             logger.info(
                 f'{color.custom("48")}[%sMSG {color.white}| \x1B[0m%s{ctx.guild.name}\x1B[0m {color.white}=> \x1B[0m%s'
                 f'{ctx.channel.name}{color.custom("48")}]\x1B[0m '
                 f'{color.white}{ctx.author.name}: {ctx.content}, %sbot: %s {ctx.author.bot}' %
-                (color.custom("154"), color.custom("35"), color.custom("34"), color.custom("116"), color.custom("117"))
+                (color.custom("154"), color.custom("35"), color.custom(
+                    "34"), color.custom("116"), color.custom("117"))
             )
         except AttributeError:
             logger.info(
@@ -142,10 +115,12 @@ class NextHime(commands.Bot):
             self.voice_clients, guild=ctx.guild
         )
 
-        if config.jtalk.aloud and check_voice_channel is not None:
-            create_wave(f"{alfakana.sentence_kana(f'{ctx.author.name}さんからのメッセージ {ctx.content}', './dic.db')}")
+        if config.jtalk.aloud and check_voice_channel is not None and ctx.author.bot is False:
+            create_wave(
+                f"{alfakana.sentence_kana(f'{ctx.author.name}さんからのメッセージ {ctx.content}', './dic.db')}")
             while True:
-                source = discord.FFmpegPCMAudio(f"{config.jtalk.output_wav_name}")
+                source = discord.FFmpegPCMAudio(
+                    f"{config.jtalk.output_wav_name}")
                 if ctx.guild.voice_client.is_playing() is False:
                     try:
                         ctx.guild.voice_client.play(source)
@@ -156,18 +131,20 @@ class NextHime(commands.Bot):
 
 
 async def migrate():
-    logger.info(system_language['migrate']['action']
-                ['run_check']['message']['check'])
+    logger.info(i18n.t('message.migrate.run.check',
+                locale=config.options.lang))
     from inputimeout import inputimeout, TimeoutOccurred
 
     try:
-        y_n = inputimeout(prompt=">>", timeout=int(config.options.input_timeout))
+        y_n = inputimeout(prompt=">>", timeout=int(
+            config.options.input_timeout))
     except TimeoutOccurred:
-        logger.info(system_language['migrate']['action']['run_check']
-                    ['message']['timeout'] % config.options.input_timeout)
+        logger.info(i18n.t('message.migrate.run.timeout',
+                    locale=config.options.lang) % config.options.input_timeout)
         y_n = "something"
     except PermissionError:
-        logger.error('端末の操作ができません')
+        logger.error(i18n.t('message.migrate.error.unable_operate_terminal.name'))
+        logger.error(i18n.t('message.migrate.error.unable_operate_terminal.message'))
         y_n = None
 
     if y_n == "y":
