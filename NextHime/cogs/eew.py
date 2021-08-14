@@ -1,14 +1,14 @@
 import asyncio
 import json
 from distutils.util import strtobool
+from src.modules.eew.eew_utils import EewMessage, EewInfo
 
-import requests as requests
 from discord.ext import commands, tasks
 
-from NextHime import db_manager, logger, session, config
-from src.modules.eew import EewSendChannel
+from NextHime import db_manager, logger, session, config, redis_conn
+from src.modules.eew import EewAPI
 from src.modules.embed_manager import EmbedManager
-from src.sql.models.eew import EewChannel, Eew
+from src.sql.models.eew import EewChannel
 
 logger = logger.getChild('cog.eew')
 
@@ -19,25 +19,22 @@ class EewCog(commands.Cog):
 
     @tasks.loop(seconds=1)
     async def bot_eew_loop(self):
-        url = "https://dev.narikakun.net/webapi/earthquake/post_data.json"
-        try:
-            result = requests.get(url).json()
-            logger.debug(result)
-        except json.decoder.JSONDecodeError:
-            logger.error("eewの情報取得にてエラーが発生しました: コンテンツタイプがjsonではありません")
-            return
-        event_id = result["Head"]["EventID"]
-        search_event_id = session.query(Eew).filter(Eew.event_id == event_id).first()
-        if search_event_id is None:
-            await db_manager.commit(Eew(event_id=event_id))
-            eew_manager = EewSendChannel(self.bot, result)
-            image_url = await eew_manager.get_nhk_image(result["Body"]["Earthquake"]["OriginTime"])
+        api_result = EewAPI().get_eew()
+        eew = api_result.eew
+        get_old_eew = redis_conn.get(f'eew_{eew["Head"]["EventID"]}')
+        intensity_pref_list = []
+        for intensity_pref in eew["Body"]["Intensity"]["Observation"]["Pref"]:
+            intensity_pref_list.append(intensity_pref)
+        if not get_old_eew:
             search_eew_channel_list = session.query(EewChannel)
+            image_url = await api_result.get_nhk_image()
             for channel in search_eew_channel_list:
-                logger.debug(f"{channel.channel_id}にEew情報を送信します")
-                asyncio.ensure_future(
-                    eew_manager.send(image_url, channel.channel_id)
-                )
+                asyncio.ensure_future(EewMessage(self.bot, EewInfo(eew, intensity_pref_list), channel=channel.channel_id).
+                                      create_main_embed(image_url).send())
+            redis_conn.set(f'eew_{eew["Head"]["EventID"]}', json.dumps(eew), ex=10)
+        else:
+            redis_conn.set(f'eew_{eew["Head"]["EventID"]}', json.dumps(eew), ex=10)
+
 
     @commands.group()
     async def eew(self, ctx):
