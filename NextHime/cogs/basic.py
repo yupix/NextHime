@@ -1,4 +1,5 @@
 import datetime
+from msilib.schema import Component
 import random
 import time
 import traceback
@@ -39,11 +40,13 @@ class BasicCog(commands.Cog):
     @reload.error
     async def reload_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
-            await EmbedManager(ctx).generate(mode='succeed', embed_title="エラー", embed_description="このコマンドはBotの所有者のみが実行できます")
+            await EmbedManager(ctx).generate(mode='succeed', embed_title="エラー",
+                                             embed_description="このコマンドはBotの所有者のみが実行できます").send()
 
     @commands.command(name="random")
     async def random(self, ctx):
         await ctx.send(random.randint(1, 10))
+
 
 def setup(bot):
     bot.add_cog(BasicCog(bot))
