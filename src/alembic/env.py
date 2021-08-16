@@ -26,6 +26,7 @@ target_models = [
     "src.sql.models.eew",
     "src.sql.models.note",
     "src.sql.models.guild",
+    "src.sql.models.user",
     "src.sql.models.WarframeFissure",
 ]
 
