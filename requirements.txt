@@ -21,6 +21,9 @@ dacite==1.6.0
 dbmanager @ git+https://github.com/yupix/dbmanager@93258484bcfe90a6ca10850cb121cfb993ec1039
 git+https://github.com/yupix/alfakana.git
 python-i18n[YAML]
+pyqrcode
+pypng
+loguru
 discord-py-slash-command==2.3.2
 discord.py==1.7.3
 fastapi==0.67.0
