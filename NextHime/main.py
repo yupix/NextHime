@@ -1,19 +1,18 @@
 import asyncio
 import traceback
-from distutils.util import strtobool
+
 import alfakana
 import discord
 import i18n
-
 from discord.ext import commands
-from discord_slash import SlashCommand
 from fastapi import FastAPI
 from fastapi_discord import DiscordOAuthClient
 from fastapi_versioning import VersionedFastAPI
 from starlette.middleware.cors import CORSMiddleware
 from uvicorn import Config, Server
+from loguru import logger
 
-from NextHime import logger, config
+from NextHime import config
 from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.auto_migrate import AutoMigrate
 from src.modules.color import Color
@@ -31,14 +30,12 @@ if config.api.discord_redirect_url and \
 
 class API:
     def __init__(self):
-        self.title = f'{config.user} API'
+        self.title = f'{config.bot.name} API'
 
     async def create(self):
         from NextHime.routers.v1 import discord_guild
-        from NextHime.routers.v1 import auth
         app = FastAPI(title=f"{self.title}")
         app.include_router(discord_guild.index.router)
-        app.include_router(auth.index.router)
         app = VersionedFastAPI(
             app, version_format="{major}", prefix_format="/v{major}")
         return app
@@ -56,8 +53,7 @@ slash_client = None
     "NextHime.cogs.basic",
 """
 
-INITIAL_EXTENSIONS = ["NextHime.cogs.eew", "NextHime.cogs.basic",
-                      "NextHime.cogs.warframe", "NextHime.cogs.read"]
+INITIAL_EXTENSIONS = ["NextHime.cogs.basic", "NextHime.cogs.warframe", "NextHime.cogs.read"]
 
 
 class NextHime(commands.Bot):
@@ -65,7 +61,6 @@ class NextHime(commands.Bot):
         super().__init__(
             command_prefix, help_command=None, description=None, intents=intents
         )
-        SlashCommand(self, sync_commands=True)
 
         for cog in INITIAL_EXTENSIONS:
             try:
@@ -74,22 +69,16 @@ class NextHime(commands.Bot):
                 traceback.print_exc()
 
     async def on_ready(self):
-        name_length = len(self.user.name)
-        id_length = len(str(self.user.id))
-        if name_length >= id_length:
-            length = name_length
-        else:
-            length = id_length
-        equal = '=' * length
-        print(f"""\033[32m{i18n.t('message.system.login_success', locale=config.options.lang)}\033[0m
-#=========={equal}#
-\033[1m{i18n.t('message.system.account_name', locale=config.options.lang)}\033[0m: \033[34m{self.user.name}\033[0m
-\033[1m{i18n.t('message.system.account_id', locale=config.options.lang)}\033[0m: \033[34m{self.user.id}\033[0m
-#=========={equal}#
+        board = len(i18n.t('message.system.account_id', locale=config.options.lang) + str(self.user.id))
+        print(f"""┌{'──' * board}┐
+│\033[32m{i18n.t('message.system.login_success', locale=config.options.lang)}\033[0m
+│\033[1m{i18n.t('message.system.account_name', locale=config.options.lang)}\033[0m: \033[34m{self.user.name}\033[0m
+│\033[1m{i18n.t('message.system.account_id', locale=config.options.lang)}\033[0m: \033[34m{self.user.id}\033[0m
+└{'──' * board}┘
 """)
 
     async def on_message(self, ctx):
-        if bool(strtobool(config.options.log_show_bot)) is False and ctx.author.bot is True:
+        if config.options.log_show_bot is False and ctx.author.bot is True:
             return
         ctx.content = NextHimeUtils(bot).check_msg_mentions(
             ctx).replace_msg_mention()
@@ -109,7 +98,7 @@ class NextHime(commands.Bot):
                 (Color().custom("36"), Color().custom("116"), Color().custom("117"))
             )
 
-        await EmbedManager(ctx).parse_to_print(logger)
+        await EmbedManager(ctx).parse_to_print()
 
         check_voice_channel = discord.utils.get(
             self.voice_clients, guild=ctx.guild
@@ -143,8 +132,10 @@ async def migrate():
                     locale=config.options.lang) % config.options.input_timeout)
         y_n = "something"
     except PermissionError:
-        logger.error(i18n.t('message.migrate.error.unable_operate_terminal.name'))
-        logger.error(i18n.t('message.migrate.error.unable_operate_terminal.message'))
+        logger.error(
+            i18n.t('message.migrate.error.unable_operate_terminal.name'))
+        logger.error(
+            i18n.t('message.migrate.error.unable_operate_terminal.message'))
         y_n = None
 
     if y_n == "y":
@@ -165,8 +156,8 @@ async def api_run(loop1):
         allow_methods=['*'],
         allow_headers=['*'])
     asyncio.set_event_loop(loop1)
-    api_config = Config(app=app, host=f'{config.api_host}', loop=loop1, port=int(
-        config.api_port), reload=True)
+    api_config = Config(app=app, host=f'{config.api.host}', loop=loop1, port=int(
+        config.api.port), reload=True)
     server = Server(api_config)
     await server.serve()
 
@@ -174,12 +165,12 @@ async def api_run(loop1):
 def run(loop_bot, loop_api):
     global bot
     global slash_client
-    if bool(strtobool(config.db.auto_migrate)):
+    if config.db.auto_migrate:
         asyncio.run(migrate())
     asyncio.set_event_loop(loop_bot)
     intents = discord.Intents.all()
     bot = NextHime(command_prefix=f"{config.bot.prefix}", intents=intents)
-    if bool(strtobool(config.api.use)) is True:
+    if config.api.use is True:
         future = asyncio.gather(bot_run(loop_bot), api_run(loop_api))
     else:
         future = asyncio.gather(bot_run(loop_bot))
