@@ -1,20 +1,22 @@
 import configparser
 import os
 import time
-import i18n
+from distutils.util import strtobool
 
 from redis import Redis
-from distutils.util import strtobool
 from logging import getLogger
-from dbmanager import DbManager
-from dotenv import load_dotenv
+
+import i18n
 from halo import Halo
+from dotenv import load_dotenv
+from dbmanager import DbManager
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+
+
 from src.modules.Config import HimeConfig
 from src.modules.create_logger import EasyLogger
-from src.modules.language_manager import LanguageManager
 
 start_time = time.time()
 
