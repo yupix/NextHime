@@ -1,4 +1,6 @@
+import ast
 from distutils.util import strtobool
+from typing import List
 
 from src.modules.NextHimeUtils import NextHimeUtils
 
@@ -66,6 +68,7 @@ class HimeConfig(object):
             self.log_show_bot: bool = strtobool(config_dict['OPTIONS']['log_show_bot'])
             self.log_show_commit: bool = strtobool(config_dict['OPTIONS']['log_show_commit'])
             self.log_force_show_commit: bool = config_dict['OPTIONS']['log_force_show_commit']
+            self.slash_command_guild: List[int] = ast.literal_eval(config_dict['OPTIONS']['slash_command_guild'])
 
     class BLOG(object):
         def __init__(self, config_dict):
