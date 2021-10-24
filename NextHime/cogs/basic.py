@@ -67,7 +67,7 @@ class BasicCog(commands.Cog):
     async def locale(self, ctx):
         pass
 
-    @locale.sub_command(name="set", description='あなたこのBotで使用したい言語に変更します')
+    @locale.sub_command(name="set", description='Botで使用したい言語を変更します')
     async def set(self, ctx, language: Language):
         await db_manager.commit(Users(user_id=ctx.author.id, locale=language))
         await ctx.response.send_message(embed=EmbedManager(ctx).generate(
