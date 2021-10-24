@@ -43,7 +43,6 @@ class API:
 
 
 bot: commands.Bot = commands.Bot(None)
-slash_client = None
 
 """TODO: 下のやつをサポートする
     "NextHime.cogs.note",
@@ -167,7 +166,6 @@ async def api_run(loop1):
 
 def run(loop_bot, loop_api):
     global bot
-    global slash_client
     if config.db.auto_migrate:
         asyncio.run(migrate())
     asyncio.set_event_loop(loop_bot)
