@@ -1,3 +1,5 @@
+from distutils.util import strtobool
+
 from src.modules.NextHimeUtils import NextHimeUtils
 
 
@@ -25,7 +27,7 @@ class HimeConfig(object):
             self.host: str = config_dict['DB']['host']
             self.password: str = config_dict['DB']['password']
             self.database: str = config_dict['DB']['database']
-            self.auto_migrate: bool = config_dict['DB']['auto_migrate']
+            self.auto_migrate: bool = strtobool(config_dict['DB']['auto_migrate'])
 
     class Redis(object):
         def __init__(self, config_dict):
@@ -35,7 +37,7 @@ class HimeConfig(object):
 
     class API(object):
         def __init__(self, config_dict):
-            self.use: bool = config_dict['API']['use']
+            self.use: bool = strtobool(config_dict['API']['use'])
             self.host: str = config_dict['API']['host']
             self.port: int = config_dict['API']['port']
             self.discord_client: str = config_dict['API']['discord_client']
@@ -45,7 +47,7 @@ class HimeConfig(object):
 
     class EEW(object):
         def __init__(self, config_dict):
-            self.use: bool = config_dict['EEW']['use']
+            self.use: bool = strtobool(config_dict['EEW']['use'])
 
     class JTALK(object):
         def __init__(self, config_dict):
@@ -54,15 +56,15 @@ class HimeConfig(object):
             self.bin_path: str = config_dict['JTALK']['bin_path']
             self.output_wav_name: str = NextHimeUtils().temp_path + config_dict['JTALK']['output_wav_name']
             self.speed: int = config_dict['JTALK']['speed']
-            self.aloud: bool = config_dict['JTALK']['aloud']
+            self.aloud: bool = strtobool(config_dict['JTALK']['aloud'])
 
     class OPTIONS(object):
         def __init__(self, config_dict):
             self.log_level: str = config_dict['OPTIONS']['log_level']
             self.lang: str = config_dict['OPTIONS']['lang']
             self.input_timeout: int = config_dict['OPTIONS']['input_timeout']
-            self.log_show_bot: bool = config_dict['OPTIONS']['log_show_bot']
-            self.log_show_commit: bool = config_dict['OPTIONS']['log_show_commit']
+            self.log_show_bot: bool = strtobool(config_dict['OPTIONS']['log_show_bot'])
+            self.log_show_commit: bool = strtobool(config_dict['OPTIONS']['log_show_commit'])
             self.log_force_show_commit: bool = config_dict['OPTIONS']['log_force_show_commit']
 
     class BLOG(object):
@@ -71,5 +73,5 @@ class HimeConfig(object):
 
     class SENTRY(object):
         def __init__(self, config_dict):
-            self.sentry_use: bool = config_dict['ADVANCED']['sentry_use']
+            self.sentry_use: bool = strtobool(config_dict['ADVANCED']['sentry_use'])
             self.sentry_dsn: str = config_dict['ADVANCED']['sentry_dsn']
