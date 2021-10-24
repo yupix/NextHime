@@ -21,7 +21,7 @@ async def callback(code: str):
 
 @router.get("/profile")
 @discord_auth.requires_authorization
-async def hello(request: Request):
+async def profile(request: Request):
     return await discord_auth.user(request)
 
 

@@ -1,4 +1,4 @@
 from . import discord_guild
-from . import auth
+from . import eew
 
-__all__ = ['discord_guild', 'auth']
+__all__ = ['discord_guild', 'eew']

@@ -1,4 +1,4 @@
-# Next Hime Project
+# Re.Next Hime
 
 ![鳴花 PROJECT](https://s3.akarinext.org/assets/*/HIME%20MIKOT%20(3).png)
 
@@ -14,7 +14,8 @@
 
 ## 注意
 
-このProjectは[SSM](https://github.com/yupix/ssm)のファイルを断続的に整形、または新たに機能を追加したうえで少しずつファイルを追加しているため、多くの場合必要なファイルが存在しない場合があります。
+このプロジェクトは現在 Discord.py の開発終了に伴う変更によりほとんどすべての機能を書き直しています。そのため多くの不具合などがこのブランチには存在します。
+そのため、運営目的では使用しないでください。
 
 ## OS毎の依存関係
 
@@ -24,7 +25,7 @@
 - python3.9-dev # 3.9は使用しているバージョンによる
 - postgresql
 - git
-- base-devel(必要ない可能性)
+- base-devel(Build Essential)
 
 ### Windows10 | Windows11
 

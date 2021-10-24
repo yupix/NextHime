@@ -1,10 +1,12 @@
 import asyncio
 import alfakana
 
-import discord
-from discord.ext import commands
+import disnake as discord
+from disnake.ext import commands
+from loguru import logger
+import i18n
 
-from NextHime import logger, config
+from NextHime import config
 from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.voice_generator import create_wave
 
@@ -26,24 +28,24 @@ class ReadCog(commands.Cog):
     async def join(self, ctx):
         vc = ctx.author.voice
         if not vc or not vc.channel:
-            await ctx.send('ボイスチャットに参加してください')
+            await ctx.send(i18n.t('message.read.notJoinVoiceChannel', locale=ctx.author.locale))
             return
         logger.debug(f"ボイスチャンネル {vc} に参加しました")
-        create_wave("こんにちは! 読み上げを開始します。")
+        await create_wave("こんにちは! 読み上げを開始します。")
         source = discord.FFmpegPCMAudio(f"{config.jtalk.output_wav_name}")
         try:
             await vc.channel.connect()
             await asyncio.sleep(3)
             ctx.guild.voice_client.play(source)
         except discord.ClientException:
-            create_wave("既に参加しています")
+            await create_wave("既に参加しています")
 
             source = discord.FFmpegPCMAudio(f"{config.jtalk.output_wav_name}")
             ctx.guild.voice_client.play(source)
 
     @commands.command()
     async def leave(self, ctx):
-        create_wave("読み上げを終了します。お疲れ様でした。")
+        await create_wave("読み上げを終了します。お疲れ様でした。")
         source = discord.FFmpegPCMAudio(f"{config.jtalk.output_wav_name}")
         ctx.guild.voice_client.play(source)
         await asyncio.sleep(4)
@@ -70,10 +72,10 @@ class ReadCog(commands.Cog):
 
         if before.channel is None:
             logger.debug(f"{member.name} さんがボイスチャンネル {after.channel.name} に参加しました")
-            create_wave(input_text + f"{member.name} さんがボイスチャンネルに参加しました")
+            await create_wave(alfakana.sentence_kana(input_text + f"{member.name} さんがボイスチャンネルに参加しました", './dic.db'))
         elif after.channel is None:
-            logger.debug(f"{member.name} さんがボイスチャンネル {before.channel.name} から退出しました")
-            create_wave(input_text + f"{member.name} さんがボイスチャンネルから退出しました")
+            logger.debug(alfakana.sentence_kana(f"{member.name} さんがボイスチャンネル {before.channel.name} から退出しました", './dic.db'))
+            await create_wave(input_text + f"{member.name} さんがボイスチャンネルから退出しました")
 
         if before.channel is None or after.channel is None:
             source = discord.FFmpegPCMAudio(f"{config.jtalk.output_wav_name}")

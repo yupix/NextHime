@@ -1,18 +1,19 @@
 import asyncio
 import traceback
 
-import alfakana
-import discord
+import disnake as discord
 import i18n
-from discord.ext import commands
+from disnake.ext import commands
 from fastapi import FastAPI
 from fastapi_discord import DiscordOAuthClient
 from fastapi_versioning import VersionedFastAPI
+from loguru import logger
+from rich import print as rich_print
+from rich.panel import Panel
 from starlette.middleware.cors import CORSMiddleware
 from uvicorn import Config, Server
-from loguru import logger
 
-from NextHime import config
+from NextHime import config, log
 from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.auto_migrate import AutoMigrate
 from src.modules.color import Color
@@ -53,13 +54,17 @@ slash_client = None
     "NextHime.cogs.basic",
 """
 
-INITIAL_EXTENSIONS = ["NextHime.cogs.basic", "NextHime.cogs.warframe", "NextHime.cogs.read"]
+INITIAL_EXTENSIONS = ["NextHime.cogs.basic"]
 
 
 class NextHime(commands.Bot):
     def __init__(self, command_prefix, intents):
         super().__init__(
-            command_prefix, help_command=None, description=None, intents=intents
+            command_prefix,
+            description=None,
+            intents=intents,
+            test_guilds=['530299114387406860'],
+            sync_commands_debug=True
         )
 
         for cog in INITIAL_EXTENSIONS:
@@ -69,13 +74,12 @@ class NextHime(commands.Bot):
                 traceback.print_exc()
 
     async def on_ready(self):
-        board = len(i18n.t('message.system.account_id', locale=config.options.lang) + str(self.user.id))
-        print(f"""┌{'──' * board}┐
-│\033[32m{i18n.t('message.system.login_success', locale=config.options.lang)}\033[0m
-│\033[1m{i18n.t('message.system.account_name', locale=config.options.lang)}\033[0m: \033[34m{self.user.name}\033[0m
-│\033[1m{i18n.t('message.system.account_id', locale=config.options.lang)}\033[0m: \033[34m{self.user.id}\033[0m
-└{'──' * board}┘
-""")
+        login_success_msg = i18n.t('message.system.login_success', locale=config.options.lang)
+        account_name = i18n.t('message.system.account_name', locale=config.options.lang)
+        account_id = i18n.t('message.system.account_id', locale=config.options.lang)
+        rich_print(Panel.fit(f"""[green]{login_success_msg}[/green]
+[bold]{account_name}[/bold]: [blue]{self.user.name}[/blue]
+[bold]{account_id}[/bold]: [blue]{self.user.id}[/blue]"""))
 
     async def on_message(self, ctx):
         if config.options.log_show_bot is False and ctx.author.bot is True:
@@ -84,15 +88,14 @@ class NextHime(commands.Bot):
             ctx).replace_msg_mention()
         color = Color()
         try:
-            logger.info(
-                f'{color.custom("48")}[%sMSG {color.white}| \x1B[0m%s{ctx.guild.name}\x1B[0m {color.white}=> \x1B[0m%s'
-                f'{ctx.channel.name}{color.custom("48")}]\x1B[0m '
-                f'{color.white}{ctx.author.name}: {ctx.content}, %sbot: %s {ctx.author.bot}' %
-                (color.custom("154"), color.custom("35"), color.custom(
-                    "34"), color.custom("116"), color.custom("117"))
-            )
+            log.info(
+                f'[[spring_green1]MSG[/spring_green1] | [bright_green]{ctx.guild.name}[/bright_green] => {ctx.channel.name}]'
+                f' {ctx.author.name}:'
+                f' {ctx.content}, '
+                f'bot: {ctx.author.bot}'
+                , extra={"markup": True})
         except AttributeError:
-            logger.info(
+            log.info(
                 f'{color.custom("48")}[%sDM {color.white}| \x1B[0m{color.white}{ctx.author.name}: {ctx.content}, '
                 f'%sbot: %s{ctx.author.bot}' %
                 (Color().custom("36"), Color().custom("116"), Color().custom("117"))
@@ -105,8 +108,8 @@ class NextHime(commands.Bot):
         )
 
         if config.jtalk.aloud and check_voice_channel is not None and ctx.author.bot is False:
-            create_wave(
-                f"{alfakana.sentence_kana(f'{ctx.author.name}さんからのメッセージ {ctx.content}', './dic.db')}")
+            await create_wave(
+                f'{ctx.author.name}さんからのメッセージ {ctx.content}')
             while True:
                 source = discord.FFmpegPCMAudio(
                     f"{config.jtalk.output_wav_name}")
@@ -121,7 +124,7 @@ class NextHime(commands.Bot):
 
 async def migrate():
     logger.info(i18n.t('message.migrate.run.check',
-                locale=config.options.lang))
+                       locale=config.options.lang))
     from inputimeout import inputimeout, TimeoutOccurred
 
     try:
@@ -129,7 +132,7 @@ async def migrate():
             config.options.input_timeout))
     except TimeoutOccurred:
         logger.info(i18n.t('message.migrate.run.timeout',
-                    locale=config.options.lang) % config.options.input_timeout)
+                           locale=config.options.lang) % config.options.input_timeout)
         y_n = "something"
     except PermissionError:
         logger.error(

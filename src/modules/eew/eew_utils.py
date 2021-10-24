@@ -2,7 +2,7 @@ import asyncio
 from src.modules.embed_manager import EmbedManager
 import i18n
 
-from discord.ext import commands
+from disnake.ext import commands
 
 
 class EewInfo(object):

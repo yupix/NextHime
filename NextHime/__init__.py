@@ -1,19 +1,20 @@
 import configparser
+import logging
 import os
 import time
-from distutils.util import strtobool
+from logging import getLogger
 
 import i18n
-from loguru import logger
-from halo import Halo
-from dotenv import load_dotenv
 from dbmanager import DbManager
+from dotenv import load_dotenv
+from halo import Halo
+from loguru import logger
 from redis import Redis
-from logging import getLogger
+from rich.console import Console
+from rich.logging import RichHandler
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
 
 from src.modules.Config import HimeConfig
 from src.modules.create_logger import EasyLogger
@@ -58,12 +59,18 @@ Session = sessionmaker(bind=engine, autoflush=True, expire_on_commit=False)
 
 session = Session()
 
+console = Console()
+
 # --------------------------------
 # 1.loggerの設定
 # --------------------------------
-# loggerオブジェクトの宣言
-logger = getLogger("main")
-logger = EasyLogger(logger, logger_level=f"{config.options.log_level}").create()
+FORMAT = "%(message)s"
+logging.basicConfig(
+    level="INFO", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()]
+)
+
+log = logging.getLogger("rich")
+
 spinner = Halo(text=f"{i18n.t('message.logger.init_success', locale=config.options.lang)}", spinner="dots")
 spinner.start()
 db_manager = DbManager(

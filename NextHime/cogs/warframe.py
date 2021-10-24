@@ -1,7 +1,7 @@
 import json
 import tempfile
 
-from discord.ext import commands, tasks
+from disnake.ext import commands, tasks
 
 from NextHime import redis_conn, session, db_manager
 from src.modules.NextHimeUtils import NextHimeUtils
