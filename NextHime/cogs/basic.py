@@ -23,17 +23,18 @@ class BasicCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.slash_command(name='ping', description='Botのpingを測定します', guild_ids=config.options.slash_command_guild)
     async def ping(self, ctx):
-        await ctx.channel.send(f"ping: {round(self.bot.latency * 1000)}ms")
+        await ctx.response.send_message(f"ping: {round(self.bot.latency * 1000)}ms")
 
-    @commands.command()
+    @commands.slash_command(name='status', description='Botのステータスを表示します', guild_ids=config.options.slash_command_guild)
     async def status(self, ctx):
         current_time = time.time()
         difference_time = int(round(current_time - start_time))
         uptime = str(datetime.timedelta(seconds=difference_time))
-        await EmbedManager(ctx).generate(embed_title=f"{config.bot.name}のステータス",
-                                         embed_content=[{'title': '起動時間', 'value': f'{uptime}'}]).send()
+        await ctx.response.send_message(embed=EmbedManager(ctx).generate(embed_title=f"{config.bot.name}のステータス",
+                                                                         embed_content=[
+                                                                             {'title': '起動時間', 'value': f'{uptime}'}]).embed)
 
     @commands.slash_command(name='reload', description='Botをリロードします。 ※管理者のみ', guild_ids=config.options.slash_command_guild)
     @commands.is_owner()
@@ -76,9 +77,19 @@ class BasicCog(commands.Cog):
                 locale=language)
         ).embed)
 
-    @commands.command(name="random")
-    async def random(self, ctx):
-        await ctx.send(random.randint(1, 10))
+    @commands.slash_command(name="random", description='1から100までのランダムな数値を生成します。オプションで最小/最大値を変更できます',
+                            guild_ids=config.options.slash_command_guild)
+    async def random(self, ctx, min_int: int = 1, max_int: int = 10):
+        """
+
+        Parameters
+        ----------
+        min_int : int
+            最小値
+        max_int : int
+            最大値
+        """
+        await ctx.response.send_message(random.randint(min_int, max_int))
 
 
 def setup(bot):
