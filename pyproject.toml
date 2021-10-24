@@ -27,7 +27,6 @@ coloredlogs = "15.0.1"
 configparser = "5.0.2"
 Cycler = "0.10.0"
 dacite = "1.6.0"
-diskord = "^2.6.0"
 disnake = {git = "https://github.com/EQUENOS/disnake"}
 dbmanager = {git = "https://github.com/yupix/dbmanager", rev = "93258484bcfe90a6ca10850cb121cfb993ec1039"}
 alfakana = {git = "https://github.com/yupix/alfakana.git"}
