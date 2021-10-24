@@ -13,8 +13,11 @@ class EewAPI:
         self.result = requests.get(url)
         return self.result
 
-    def get_eew(self) -> 'EewAPI':
-        url = "https://dev.narikakun.net/webapi/earthquake/post_data.json"
+    def get_eew(self, debug: bool = False) -> 'EewAPI':
+        if debug:
+            url = 'http://localhost:5500/v1/eew/post_data.json'
+        else:
+            url = 'https://dev.narikakun.net/webapi/earthquake/post_data.json'
         try:
             self.eew = self.fetch_api(url).json()
         except json.decoder.JSONDecodeError:
