@@ -13,7 +13,7 @@ from rich.panel import Panel
 from starlette.middleware.cors import CORSMiddleware
 from uvicorn import Config, Server
 
-from NextHime import config
+from NextHime import config, log
 from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.auto_migrate import AutoMigrate
 from src.modules.color import Color
@@ -54,7 +54,7 @@ slash_client = None
     "NextHime.cogs.basic",
 """
 
-INITIAL_EXTENSIONS = ["NextHime.cogs.basic", "NextHime.cogs.warframe", "NextHime.cogs.read"]
+INITIAL_EXTENSIONS = ["NextHime.cogs.basic"]
 
 
 class NextHime(commands.Bot):
@@ -88,15 +88,14 @@ class NextHime(commands.Bot):
             ctx).replace_msg_mention()
         color = Color()
         try:
-            logger.info(
-                f'{color.custom("48")}[%sMSG {color.white}| \x1B[0m%s{ctx.guild.name}\x1B[0m {color.white}=> \x1B[0m%s'
-                f'{ctx.channel.name}{color.custom("48")}]\x1B[0m '
-                f'{color.white}{ctx.author.name}: {ctx.content}, %sbot: %s {ctx.author.bot}' %
-                (color.custom("154"), color.custom("35"), color.custom(
-                    "34"), color.custom("116"), color.custom("117"))
-            )
+            log.info(
+                f'[[spring_green1]MSG[/spring_green1] | [bright_green]{ctx.guild.name}[/bright_green] => {ctx.channel.name}]'
+                f' {ctx.author.name}:'
+                f' {ctx.content}, '
+                f'bot: {ctx.author.bot}'
+                , extra={"markup": True})
         except AttributeError:
-            logger.info(
+            log.info(
                 f'{color.custom("48")}[%sDM {color.white}| \x1B[0m{color.white}{ctx.author.name}: {ctx.content}, '
                 f'%sbot: %s{ctx.author.bot}' %
                 (Color().custom("36"), Color().custom("116"), Color().custom("117"))
