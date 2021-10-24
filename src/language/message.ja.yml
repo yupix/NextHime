@@ -6,6 +6,10 @@ system:
   account_id: アカウントID
   login_success: ログインに成功しました
   unable_operate_terminal: 端末の操作ができません
+  reloadSuccess: リロードに成功しました
+
+locale:
+  ChangeSuccessTitle: 言語の変更に成功
 
 logger:
   init_success: 初期化に成功しました
@@ -19,6 +23,9 @@ migrate:
     unable_operate_terminal:
       name: 端末の操作ができません
       message: 一般的にこのエラーは仮想ターミナルを使用している場合に発生します。
+
+read:
+  notJoinVoiceChannel: ボイスチャットに参加してください
 
 eew:
   word:
