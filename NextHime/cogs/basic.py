@@ -2,6 +2,7 @@ import datetime
 import random
 import time
 import traceback
+from enum import Enum
 
 import i18n
 from disnake.ext import commands
@@ -9,9 +10,13 @@ from loguru import logger
 
 from NextHime import config, db_manager, start_time
 from NextHime.main import INITIAL_EXTENSIONS
-from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.embed_manager import EmbedManager
 from src.sql.models.user import Users
+
+
+class Language(str, Enum):
+    Japan = 'ja'
+    English = 'en'
 
 
 class BasicCog(commands.Cog):
@@ -51,26 +56,21 @@ class BasicCog(commands.Cog):
 
     @commands.slash_command(name='user', guild_ids=config.options.slash_command_guild)
     async def user(self, ctx):
-        await NextHimeUtils(bot=self.bot, ctx=ctx).not_args_message()
+        pass
 
     @user.sub_command_group(name='locale')
     async def locale(self, ctx):
-        await NextHimeUtils(bot=self.bot, ctx=ctx).not_args_message()
+        pass
 
-    @locale.sub_command(name="set")
-    async def set(self, ctx, locale):
-        support_locales = ''
-        for support_locale in locale.locales.keys():
-            support_locales += support_locale + ','
-        if locale.locale:
-            await db_manager.commit(Users(user_id=ctx.author.id, locale=locale.locale))
-            await EmbedManager(ctx).generate(mode='succeed', embed_title=i18n.t('message.locale.ChangeSuccessTitle',
-                                                                                locale=locale.locale)).send()
-        else:
-            await EmbedManager(ctx).generate(mode='failed',
-                                             embed_title="Failed: ChangeLanguage",
-                                             embed_description=f"Not supported or has a different name\n \
-                                             Supported Language list:`{support_locales}`").send()
+    @locale.sub_command(name="set", description='あなたこのBotで使用したい言語に変更します')
+    async def set(self, ctx, language: Language):
+        await db_manager.commit(Users(user_id=ctx.author.id, locale=language))
+        await ctx.response.send_message(embed=EmbedManager(ctx).generate(
+            mode='succeed',
+            embed_title=i18n.t(
+                'message.locale.ChangeSuccessTitle',
+                locale=language)
+        ).embed)
 
     @commands.command(name="random")
     async def random(self, ctx):
