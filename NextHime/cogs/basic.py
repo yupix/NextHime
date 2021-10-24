@@ -58,6 +58,10 @@ class BasicCog(commands.Cog):
     async def user(self, ctx):
         pass
 
+    @user.sub_command(name='profile')
+    async def user_profile(self, ctx):
+        await ctx.response.send_message(f'{ctx.author.name}')
+
     @user.sub_command_group(name='locale')
     async def locale(self, ctx):
         pass
