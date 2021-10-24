@@ -1,3 +1,4 @@
+import asyncio
 import platform
 import subprocess
 
@@ -9,7 +10,7 @@ input_file = f"{tmp_folder}/input.txt"  # ファイルの指定
 csv_header = ["server_id", "before", "after"]
 
 
-def create_wave(input_text):
+async def create_wave(input_text):
     if config.jtalk.bin_path != "None" and config.jtalk.dic_path != "None" and config.jtalk.voice_path != "None":
         # TODO: 2020/11/22 辞書を追加
 
@@ -37,4 +38,4 @@ def create_wave(input_text):
 
 
 if __name__ == "__main__":
-    create_wave("これはテスト音声です。")
+    asyncio.run(create_wave("これはテスト音声です。"))
