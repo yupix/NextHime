@@ -3,7 +3,7 @@ import json
 from distutils.util import strtobool
 from src.modules.eew.eew_utils import EewMessage, EewInfo
 
-from discord.ext import commands, tasks
+from disnake.ext import commands, tasks
 
 from NextHime import db_manager, logger, session, config, redis_conn
 from src.modules.eew import EewAPI
@@ -19,7 +19,7 @@ class EewCog(commands.Cog):
 
     @tasks.loop(seconds=1)
     async def bot_eew_loop(self):
-        api_result = EewAPI().get_eew()
+        api_result = EewAPI().get_eew(True)
         eew = api_result.eew
         get_old_eew = redis_conn.get(f'eew_{eew["Head"]["EventID"]}')
         intensity_pref_list = []

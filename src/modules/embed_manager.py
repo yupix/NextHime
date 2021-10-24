@@ -1,8 +1,10 @@
 import asyncio
-import json
 from distutils.util import strtobool
 
-import discord
+import disnake
+import disnake as discord
+
+from NextHime import console
 
 
 class EmbedManager(object):
@@ -10,16 +12,10 @@ class EmbedManager(object):
         self.ctx = ctx
         self.embed = None
 
-    async def parse_to_print(self, logger) -> None:
-        """
-        Parameters
-        ----------
-        logger:
-            ログの出力に使用
-        """
+    async def parse_to_print(self: disnake.message.Message) -> None:
         if self.ctx.embeds:
-            for embed in self.ctx.embeds:
-                logger.info(json.dumps(embed.to_dict(), indent=2))
+            embed_list = [i.to_dict() for i in self.ctx.embeds]
+            console.log(embed_list, log_locals=True)
 
     def generate(self, embed_title: str = None, embed_description: str = '', mode: str = None,
                  color: int = 0x8BC34A, embed_content: list = [], image: str = None,

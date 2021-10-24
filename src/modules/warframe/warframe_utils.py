@@ -1,4 +1,4 @@
-from discord.ext import commands
+from disnake.ext import commands
 
 from src.modules.embed_manager import EmbedManager
 from src.modules.language_manager import LanguageManager
