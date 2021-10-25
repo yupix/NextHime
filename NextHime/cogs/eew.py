@@ -1,16 +1,14 @@
 import asyncio
 import json
 from distutils.util import strtobool
-from src.modules.eew.eew_utils import EewMessage, EewInfo
 
 from disnake.ext import commands, tasks
 
-from NextHime import db_manager, logger, session, config, redis_conn
+from NextHime import config, db_manager, redis_conn, session
 from src.modules.eew import EewAPI
+from src.modules.eew.eew_utils import EewInfo, EewMessage
 from src.modules.embed_manager import EmbedManager
 from src.sql.models.eew import EewChannel
-
-logger = logger.getChild('cog.eew')
 
 
 class EewCog(commands.Cog):
@@ -35,20 +33,28 @@ class EewCog(commands.Cog):
         else:
             redis_conn.set(f'eew_{eew["Head"]["EventID"]}', json.dumps(eew), ex=10)
 
+    @commands.slash_command(name='eew')
+    async def eew(self, ctx, guild_ids=config.options.slash_command_guild):
+        pass
 
-    @commands.group()
-    async def eew(self, ctx):
-        if ctx.invoked_subcommand is None:
-            await ctx.send("このコマンドには引数が必要です")
+    @eew.sub_command(name='setup', description='地震情報を送信するチャンネルを設定します')
+    async def setup(self, ctx, channel_id: int = None):
+        """
+        Parameters
+        ----------
+        channel_id : int
+            登録したいチャンネルID
+        """
+        if channel_id is None:
+            channel_id = ctx.channel.id
 
-    @eew.command()
-    async def setup(self, ctx):
-        await db_manager.commit(EewChannel(channel_id=ctx.channel.id))
-        await EmbedManager(ctx=ctx).generate('成功', f'<#{ctx.channel.id}>を送信チャンネルとして登録しました', 'success').send()
+        await db_manager.commit(EewChannel(channel_id=channel_id))
+        await ctx.response.send_message(embed=EmbedManager(ctx=ctx).generate('成功', f'<#{channel_id}>を送信チャンネルとして登録しました',
+                                                                             'success').embed)
 
     @commands.Cog.listener()
     async def on_ready(self):
-        if bool(strtobool(config.eew.use)) is True:
+        if config.eew.use is True:
             await self.bot_eew_loop.start()
 
 
