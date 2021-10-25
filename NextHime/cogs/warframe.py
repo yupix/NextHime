@@ -3,11 +3,10 @@ import tempfile
 
 from disnake.ext import commands, tasks
 
-from NextHime import redis_conn, session, db_manager
-from src.modules.NextHimeUtils import NextHimeUtils
+from NextHime import config, db_manager, redis_conn, session
 from src.modules.embed_manager import EmbedManager
 from src.modules.warframe.warframe_api import WarframeAPI
-from src.modules.warframe.warframe_utils import WarframeFissure, WarframeChannels
+from src.modules.warframe.warframe_utils import WarframeChannels, WarframeFissure
 from src.sql.models.WarframeFissure import WarframeFissuresChannel
 from src.sql.models.guild import Guilds
 
@@ -27,20 +26,19 @@ class WarframeCog(commands.Cog):
                 await WarframeChannels(self.bot, fissure).send_message(send_channels)
                 redis_conn.set(f'fissure_{fissure.id}', json.dumps(fissure_dict))
 
-    @commands.group(name='warframe')
+    @commands.slash_command(name='warframe', guild_ids=config.options.slash_command_guild)
     async def warframe(self, ctx):
-        await NextHimeUtils(self.bot, ctx).not_args_message()
+        pass
 
-    @warframe.group(name='fissure')
+    @warframe.sub_command_group(name='fissure')
     async def fissure(self, ctx):
-        await NextHimeUtils(self.bot, ctx).not_args_message()
+        pass
 
-    @fissure.command(name='setup')
+    @fissure.sub_command(name='setup', description='亀裂の情報をお知らせするチャンネルを指定します')
     async def setup(self, ctx):
-        await ctx.send(ctx.guild.region[0])
         await db_manager.commit(Guilds(server_id=ctx.guild.id, region=ctx.guild.region[0]))
         await db_manager.commit(WarframeFissuresChannel(channel_id=ctx.channel.id, region=ctx.guild.region[0]))
-        await EmbedManager(ctx).generate('セットアップに成功', mode='success').send()
+        await ctx.response.send_message(embed=EmbedManager(ctx).generate('セットアップに成功', mode='success').embed)
 
     @commands.Cog.listener()
     async def on_ready(self):

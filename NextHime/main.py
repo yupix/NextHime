@@ -53,7 +53,7 @@ bot: commands.Bot = commands.Bot(None)
     "NextHime.cogs.basic",
 """
 
-INITIAL_EXTENSIONS = ["NextHime.cogs.basic"]
+INITIAL_EXTENSIONS = ['NextHime.cogs.warframe', 'NextHime.cogs.basic']
 
 
 class NextHime(commands.Bot):
