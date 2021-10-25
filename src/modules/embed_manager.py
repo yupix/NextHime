@@ -77,7 +77,7 @@ class EmbedManager(object):
             メッセージ要素を返却
         """
         msg = await self.ctx.send(embed=self.embed)
-        if auto_delete is True:
+        if auto_delete:
             await asyncio.sleep(sleep_time)
             await msg.delete()
         return msg

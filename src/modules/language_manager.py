@@ -25,5 +25,4 @@ class LanguageManager:
             取得したyamlを返します
         """
         with open(f"{self.base_path}{self.lang}/{self.module_name}", encoding="utf-8") as f:
-            get_language = yaml.safe_load(f)
-            return get_language
+            return yaml.safe_load(f)
