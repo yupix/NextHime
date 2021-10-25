@@ -5,12 +5,14 @@ import traceback
 from enum import Enum
 
 import i18n
+from disnake import Interaction
 from disnake.ext import commands
 from loguru import logger
 
 from NextHime import config, db_manager, start_time
 from NextHime.main import INITIAL_EXTENSIONS
 from src.modules.embed_manager import EmbedManager
+from src.modules.translator import translator
 from src.sql.models.user import Users
 
 
@@ -90,6 +92,20 @@ class BasicCog(commands.Cog):
             最大値
         """
         await ctx.response.send_message(random.randint(min_int, max_int))
+
+    @commands.slash_command(name='translate', description='与えられた文章を翻訳します', guild_ids=config.options.slash_command_guild)
+    async def translate(self, ctx: Interaction, content: str, from_lang: str = 'en', to_lang: str = 'ja'):
+        """
+
+        Parameters
+        ----------
+        content: str
+            翻訳する文章
+        from_lang: str, default=en
+            元の言語
+        to_lang: str, default=ja
+        """
+        await ctx.response.send_message(translator(content, from_lang, to_lang))
 
 
 def setup(bot):
