@@ -1,6 +1,7 @@
 import asyncio
 import traceback
 
+import disnake
 import disnake as discord
 import i18n
 from disnake.ext import commands
@@ -13,7 +14,7 @@ from rich.panel import Panel
 from starlette.middleware.cors import CORSMiddleware
 from uvicorn import Config, Server
 
-from NextHime import config, log
+from NextHime import config, console, log
 from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.auto_migrate import AutoMigrate
 from src.modules.color import Color
@@ -100,7 +101,9 @@ class NextHime(commands.Bot):
                 (Color().custom("36"), Color().custom("116"), Color().custom("117"))
             )
 
-        await EmbedManager(ctx).parse_to_print()
+        if ctx.embeds:
+            embed_list = [i.to_dict() for i in ctx.embeds]
+            console.log(embed_list, log_locals=True)
 
         check_voice_channel = discord.utils.get(
             self.voice_clients, guild=ctx.guild
@@ -119,6 +122,14 @@ class NextHime(commands.Bot):
                     except AttributeError:
                         break
         await self.process_commands(ctx)  # コマンド動作用
+
+    async def on_slash_command_error(self, interaction: disnake.ApplicationCommandInteraction,
+                                     exception: commands.CommandError) -> None:
+        if interaction.response.is_done():
+            m = interaction.followup.send
+        else:
+            m = interaction.response.send_message
+        await m('エラーが発生しました')
 
 
 async def migrate():
