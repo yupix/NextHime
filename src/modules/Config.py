@@ -54,7 +54,7 @@ class HimeConfig(object):
 
     class WARFRAME:
         def __init__(self, config_dict):
-            self.use:bool = strtobool(config_dict['WARFRAME']['use'])
+            self.use: bool = strtobool(config_dict['WARFRAME']['use'])
 
     class JTALK(object):
         def __init__(self, config_dict):

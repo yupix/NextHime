@@ -9,7 +9,7 @@ from NextHime import console
 
 class EmbedManager(object):
     def __init__(self, ctx=None):
-        self.ctx:disnake.message.Message = ctx
+        self.ctx: disnake.message.Message = ctx
         self.embed = None
 
     async def parse_to_print(self) -> None:
