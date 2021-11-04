@@ -21,10 +21,10 @@ from src.modules.color import Color
 from src.modules.voice_generator import create_wave
 
 if (
-    config.api.discord_redirect_url
-    and config.api.discord_callback_url
-    and config.api.discord_client
-    and config.api.discord_client_secret
+        config.api.discord_redirect_url
+        and config.api.discord_callback_url
+        and config.api.discord_client
+        and config.api.discord_client_secret
 ):
     discord_auth = DiscordOAuthClient(
         f"{config.api.discord_client}",
@@ -62,6 +62,7 @@ INITIAL_EXTENSIONS = [
     "NextHime.cogs.warframe",
     "NextHime.cogs.basic",
     "NextHime.cogs.eew",
+    "NextHime.cogs.epicseven"
 ]
 
 
@@ -102,7 +103,6 @@ class NextHime(commands.Bot):
             return
         ctx.content = NextHimeUtils(bot).check_msg_mentions(
             ctx).replace_msg_mention()
-        color = Color()
         try:
             log.info(
                 f"[[spring_green1]MSG[/spring_green1] | [bright_green]{ctx.guild.name}[/bright_green] => {ctx.channel.name}]"
@@ -113,9 +113,9 @@ class NextHime(commands.Bot):
             )
         except AttributeError:
             log.info(
-                f'{color.custom("48")}[%sDM {color.white}| \x1B[0m{color.white}{ctx.author.name}: {ctx.content}, '
-                f"%sbot: %s{ctx.author.bot}"
-                % (Color().custom("36"), Color().custom("116"), Color().custom("117"))
+                f'[[spring_green1]DM[/spring_green1]] | {ctx.author.name}: {ctx.content}, '
+                f"bot: {ctx.author.bot}",
+                extra={"markup": True}
             )
 
         if ctx.embeds:
@@ -126,9 +126,9 @@ class NextHime(commands.Bot):
             self.voice_clients, guild=ctx.guild)
 
         if (
-            config.jtalk.aloud
-            and check_voice_channel is not None
-            and ctx.author.bot is False
+                config.jtalk.aloud
+                and check_voice_channel is not None
+                and ctx.author.bot is False
         ):
             await create_wave(f"{ctx.author.name}さんからのメッセージ {ctx.content}")
             while True:
@@ -143,9 +143,9 @@ class NextHime(commands.Bot):
         await self.process_commands(ctx)  # コマンド動作用
 
     async def on_slash_command_error(
-        self,
-        interaction: disnake.ApplicationCommandInteraction,
-        exception: commands.CommandError,
+            self,
+            interaction: disnake.ApplicationCommandInteraction,
+            exception: commands.CommandError,
     ) -> None:
         if interaction.response.is_done():
             m = interaction.followup.send
@@ -156,7 +156,7 @@ class NextHime(commands.Bot):
 
 async def migrate():
     logger.info(i18n.t("message.migrate.run.check",
-                locale=config.options.lang))
+                       locale=config.options.lang))
     from inputimeout import TimeoutOccurred, inputimeout
 
     try:
