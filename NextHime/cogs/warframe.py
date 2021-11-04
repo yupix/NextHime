@@ -42,7 +42,10 @@ class WarframeCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        await self.bot_warframe_loop.start()
+        if config.warframe.use:
+            await self.bot_warframe_loop.start()
+        else:
+            self.bot.unload_extension('NextHime.cogs.warframe')
 
 
 def setup(bot):
