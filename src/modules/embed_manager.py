@@ -4,18 +4,11 @@ from distutils.util import strtobool
 import disnake
 import disnake as discord
 
-from NextHime import console
-
 
 class EmbedManager(object):
     def __init__(self, ctx=None):
         self.ctx: disnake.message.Message = ctx
         self.embed = None
-
-    async def parse_to_print(self) -> None:
-        if self.ctx.embeds:
-            embed_list = [i.to_dict() for i in self.ctx.embeds]
-            console.log(embed_list, log_locals=True)
 
     def generate(self, embed_title: str = None, embed_description: str = '', mode: str = None,
                  color: int = 0x8BC34A, embed_content: list = [], image: str = None,
