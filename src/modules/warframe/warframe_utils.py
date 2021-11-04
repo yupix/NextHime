@@ -1,3 +1,4 @@
+import i18n
 from disnake.ext import commands
 
 from src.modules.embed_manager import EmbedManager
@@ -99,14 +100,15 @@ class WarframeChannels(object):
                 await EmbedManager(channel).generate(self.fissure.node, f'ミッション内容: {temp_fissure.missionType}',
                                                      embed_content=[{'title': '出現エネミー', 'value': f'{self.fissure.enemy}'},
                                                                     {'title': 'レリック',
-                                                                        'value': f'{self.fissure.tier}'},
+                                                                     'value': f'{self.fissure.tier}'},
                                                                     {'title': '終了まで',
-                                                                        'value': f'{self.fissure.eta}'}
+                                                                     'value': f'{self.fissure.eta}'}
                                                                     ]).send()
             except MissionTypeKeyError:
                 channel = self.bot.get_channel(channel.channel_id)
-                await EmbedManager(channel).generate(self.fissure.node, f'ミッション内容: {self.fissure.missionType}\n'
-                                                                        f'{self.fissure.missionType}'
-                                                                        f'はお使いの言語でサポートされていないようです。'
-                                                                        f'サポートにお問い合わせください',
-                                                     mode='failed').send()
+                await EmbedManager(channel).generate(
+                    self.fissure.node,
+                    i18n.t('message.warframe.NotSupportedType', locale='ja').format(
+                        type=self.fissure.missionType),
+                    mode='failed'
+                ).send()
