@@ -88,5 +88,6 @@ class ReadCog(commands.Cog):
                 else:
                     break
 
+
 def setup(bot):
     bot.add_cog(ReadCog(bot))
