@@ -259,7 +259,7 @@ resolved_reference = "93258484bcfe90a6ca10850cb121cfb993ec1039"
 
 [[package]]
 name = "disnake"
-version = "2.1.5"
+version = "2.2.0"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -279,7 +279,7 @@ voice = ["PyNaCl (>=1.3.0,<1.5)"]
 type = "git"
 url = "https://github.com/EQUENOS/disnake"
 reference = "master"
-resolved_reference = "036f7a67b5b12d588205861e33e67404d91c0927"
+resolved_reference = "66e54fb8e75e13b844c00f0361c3bfd9731d1cc0"
 
 [[package]]
 name = "fastapi"
