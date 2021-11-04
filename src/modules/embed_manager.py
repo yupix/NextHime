@@ -9,10 +9,10 @@ from NextHime import console
 
 class EmbedManager(object):
     def __init__(self, ctx=None):
-        self.ctx = ctx
+        self.ctx:disnake.message.Message = ctx
         self.embed = None
 
-    async def parse_to_print(self: disnake.message.Message) -> None:
+    async def parse_to_print(self) -> None:
         if self.ctx.embeds:
             embed_list = [i.to_dict() for i in self.ctx.embeds]
             console.log(embed_list, log_locals=True)
