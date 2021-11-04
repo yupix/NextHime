@@ -15,9 +15,9 @@ from starlette.middleware.cors import CORSMiddleware
 from uvicorn import Config, Server
 
 from NextHime import config, console, log
-from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.auto_migrate import AutoMigrate
 from src.modules.color import Color
+from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.voice_generator import create_wave
 
 if (
