@@ -15,17 +15,13 @@ from starlette.middleware.cors import CORSMiddleware
 from uvicorn import Config, Server
 
 from NextHime import config, console, log
-from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.auto_migrate import AutoMigrate
 from src.modules.color import Color
+from src.modules.NextHimeUtils import NextHimeUtils
 from src.modules.voice_generator import create_wave
 
-if (
-        config.api.discord_redirect_url
-        and config.api.discord_callback_url
-        and config.api.discord_client
-        and config.api.discord_client_secret
-):
+if (config.api.discord_redirect_url and config.api.discord_callback_url
+        and config.api.discord_client and config.api.discord_client_secret):
     discord_auth = DiscordOAuthClient(
         f"{config.api.discord_client}",
         f"{config.api.discord_client_secret}",
@@ -43,8 +39,9 @@ class API:
 
         app = FastAPI(title=f"{self.title}")
         app.include_router(discord_guild.index.router)
-        app = VersionedFastAPI(
-            app, version_format="{major}", prefix_format="/v{major}")
+        app = VersionedFastAPI(app,
+                               version_format="{major}",
+                               prefix_format="/v{major}")
         return app
 
 
@@ -62,7 +59,7 @@ INITIAL_EXTENSIONS = [
     "NextHime.cogs.warframe",
     "NextHime.cogs.basic",
     "NextHime.cogs.eew",
-    "NextHime.cogs.epicseven"
+    "NextHime.cogs.epicseven",
 ]
 
 
@@ -83,20 +80,16 @@ class NextHime(commands.Bot):
                 traceback.print_exc()
 
     async def on_ready(self):
-        login_success_msg = i18n.t(
-            "message.system.login_success", locale=config.options.lang
-        )
+        login_success_msg = i18n.t("message.system.login_success",
+                                   locale=config.options.lang)
         account_name = i18n.t("message.system.account_name",
                               locale=config.options.lang)
         account_id = i18n.t("message.system.account_id",
                             locale=config.options.lang)
         rich_print(
-            Panel.fit(
-                f"""[green]{login_success_msg}[/green]
+            Panel.fit(f"""[green]{login_success_msg}[/green]
 [bold]{account_name}[/bold]: [blue]{self.user.name}[/blue]
-[bold]{account_id}[/bold]: [blue]{self.user.id}[/blue]"""
-            )
-        )
+[bold]{account_id}[/bold]: [blue]{self.user.id}[/blue]"""))
 
     async def on_message(self, ctx):
         if config.options.log_show_bot is False and ctx.author.bot is True:
@@ -113,23 +106,20 @@ class NextHime(commands.Bot):
             )
         except AttributeError:
             log.info(
-                f'[[spring_green1]DM[/spring_green1]] | {ctx.author.name}: {ctx.content}, '
+                f"[[spring_green1]DM[/spring_green1]] | {ctx.author.name}: {ctx.content}, "
                 f"bot: {ctx.author.bot}",
-                extra={"markup": True}
+                extra={"markup": True},
             )
 
         if ctx.embeds:
             embed_list = [i.to_dict() for i in ctx.embeds]
             console.log(embed_list, log_locals=True)
 
-        check_voice_channel = discord.utils.get(
-            self.voice_clients, guild=ctx.guild)
+        check_voice_channel = discord.utils.get(self.voice_clients,
+                                                guild=ctx.guild)
 
-        if (
-                config.jtalk.aloud
-                and check_voice_channel is not None
-                and ctx.author.bot is False
-        ):
+        if (config.jtalk.aloud and check_voice_channel is not None
+                and ctx.author.bot is False):
             await create_wave(f"{ctx.author.name}さんからのメッセージ {ctx.content}")
             while True:
                 source = discord.FFmpegPCMAudio(
@@ -143,9 +133,9 @@ class NextHime(commands.Bot):
         await self.process_commands(ctx)  # コマンド動作用
 
     async def on_slash_command_error(
-            self,
-            interaction: disnake.ApplicationCommandInteraction,
-            exception: commands.CommandError,
+        self,
+        interaction: disnake.ApplicationCommandInteraction,
+        exception: commands.CommandError,
     ) -> None:
         if interaction.response.is_done():
             m = interaction.followup.send
@@ -160,13 +150,12 @@ async def migrate():
     from inputimeout import TimeoutOccurred, inputimeout
 
     try:
-        y_n = inputimeout(prompt=">>", timeout=int(
-            config.options.input_timeout))
+        y_n = inputimeout(prompt=">>",
+                          timeout=int(config.options.input_timeout))
     except TimeoutOccurred:
         logger.info(
-            i18n.t("message.migrate.run.timeout", locale=config.options.lang)
-            % config.options.input_timeout
-        )
+            i18n.t("message.migrate.run.timeout", locale=config.options.lang) %
+            config.options.input_timeout)
         y_n = "something"
     except PermissionError:
         logger.error(
