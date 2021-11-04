@@ -12,6 +12,7 @@ class HimeConfig(object):
         self.redis = self.Redis(config_dict)
         self.api = self.API(config_dict)
         self.eew = self.EEW(config_dict)
+        self.warframe = self.WARFRAME(config_dict)
         self.jtalk = self.JTALK(config_dict)
         self.options = self.OPTIONS(config_dict)
         self.sentry = self.SENTRY(config_dict)
@@ -50,6 +51,10 @@ class HimeConfig(object):
     class EEW(object):
         def __init__(self, config_dict):
             self.use: bool = strtobool(config_dict['EEW']['use'])
+
+    class WARFRAME:
+        def __init__(self, config_dict):
+            self.use:bool = strtobool(config_dict['WARFRAME']['use'])
 
     class JTALK(object):
         def __init__(self, config_dict):
