@@ -9,7 +9,7 @@ from dbmanager import DbManager
 from dotenv import load_dotenv
 from halo import Halo
 from loguru import logger
-from redis import Redis
+import redis
 from rich.console import Console
 from rich.logging import RichHandler
 from sqlalchemy import create_engine
@@ -46,7 +46,25 @@ i18n.set("locale", "ja")
 i18n.set("fallback", "ja")
 i18n.set("skip_locale_root_data", True)
 
-redis_conn = Redis(host='localhost', port=6379)
+# --------------------------------
+# 1.loggerの設定
+# --------------------------------
+
+logging.basicConfig(
+    level=config.options.log_level,
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler(rich_tracebacks=True)],
+)
+log = logging.getLogger("rich")
+
+
+redis_conn = redis.Redis(host='localhost', port=6379)
+try:
+    redis_conn.ping()
+except redis.exceptions.ConnectionError:
+    log.warning('redisに接続できませんでした。warframeが有効の場合自動的に無効になっています。')
+    config.warframe.use = False
 
 engine = create_engine(
     f"postgresql://{config.db.user}:{config.db.password}@{config.db.host}:{config.db.port}/{config.db.database}",
@@ -61,15 +79,6 @@ session = Session()
 
 console = Console()
 
-# --------------------------------
-# 1.loggerの設定
-# --------------------------------
-FORMAT = "%(message)s"
-logging.basicConfig(
-    level="INFO", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()]
-)
-
-log = logging.getLogger("rich")
 
 spinner = Halo(text=f"{i18n.t('message.logger.init_success', locale=config.options.lang)}", spinner="dots")
 spinner.start()
