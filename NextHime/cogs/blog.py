@@ -2,6 +2,8 @@ import disnake
 from async_timeout import Optional
 from disnake import ApplicationCommandInteraction
 from disnake.ext import commands
+from sqlalchemy import and_
+
 from src.modules.embed_manager import EmbedManager
 
 from NextHime import session, config, db_manager
@@ -60,12 +62,10 @@ class BlogCog(commands.Cog):
         print(ctx.content)
         category = session.query(BlogsCategory).filter(BlogsCategory.guild_id == ctx.guild.id).first()
         if category:
-            replay_channel = session.query(GuildBlogs).filter(GuildBlogs.guild_id == ctx.guild.id).first()
+            replay_channel = session.query(GuildBlogs).filter(and_(GuildBlogs.guild_id == ctx.guild.id,
+                                                                   GuildBlogs.replay_channel_id == ctx.channel.id)).first()
             if replay_channel and ctx.channel_mentions:
-                await ctx.create_thread(name="返信！")
-
-
-
+                await ctx.create_thread(name="返信")
 
 
 def setup(bot):
