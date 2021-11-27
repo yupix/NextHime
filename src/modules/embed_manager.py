@@ -1,24 +1,25 @@
 import asyncio
 from distutils.util import strtobool
+from typing import Any, List, Optional
 
 import disnake
 import disnake as discord
 
 
 class EmbedManager(object):
-    def __init__(self, ctx=None):
-        self.ctx: disnake.message.Message = ctx
+    def __init__(self, ctx: Optional[disnake.ApplicationCommandInteraction]=None):
+        self.ctx: Optional[disnake.ApplicationCommandInteraction] = ctx
         self.embed = None
 
     def generate(
         self,
-        embed_title: str = None,
+        embed_title: Optional[str] = None,
         embed_description: str = "",
-        mode: str = None,
+        mode: Optional[str] = None,
         color: int = 0x8BC34A,
-        embed_content: list = [],
-        image: str = None,
-        embed_thumbnail: str = None,
+        embed_content: List[Any] = [],
+        image: Optional[str] = None,
+        embed_thumbnail: Optional[str] = None,
     ) -> "EmbedManager":
         """
         Parameters
