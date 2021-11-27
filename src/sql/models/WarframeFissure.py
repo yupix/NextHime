@@ -1,10 +1,4 @@
-from sqlalchemy import (
-    Column,
-    ForeignKey,
-    Integer,
-    VARCHAR,
-    BIGINT,
-)
+from sqlalchemy import BIGINT, VARCHAR, Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
 from NextHime import Base
@@ -28,9 +22,9 @@ class WarframeFissuresDetail(Base):
     id = Column(BIGINT, primary_key=True, autoincrement=True)
     api_id = Column(
         VARCHAR(255),
-        ForeignKey(
-            "warframe_fissures_id.api_id", onupdate="CASCADE", ondelete="CASCADE"
-        ),
+        ForeignKey("warframe_fissures_id.api_id",
+                   onupdate="CASCADE",
+                   ondelete="CASCADE"),
         unique=True,
     )
     node = Column(VARCHAR(255))
@@ -60,9 +54,8 @@ class WarframeFissuresChannel(Base):
     )
     region = Column(
         VARCHAR(255),
-        ForeignKey(
-            "guilds.region", onupdate="CASCADE", ondelete="CASCADE"
-        ), unique=True
+        ForeignKey("guilds.region", onupdate="CASCADE", ondelete="CASCADE"),
+        unique=True,
     )
 
 
@@ -71,9 +64,9 @@ class WarframeFissuresMessage(Base):
     id = Column(BIGINT, primary_key=True, autoincrement=True)
     detail_id = Column(
         BIGINT,
-        ForeignKey(
-            "warframe_fissures_detail.id", onupdate="CASCADE", ondelete="CASCADE"
-        ),
+        ForeignKey("warframe_fissures_detail.id",
+                   onupdate="CASCADE",
+                   ondelete="CASCADE"),
     )
     channel_id = Column(
         BIGINT,

@@ -1,19 +1,12 @@
-from sqlalchemy import (
-    Column,
-    Integer,
-    VARCHAR,
-    BIGINT,
-    UniqueConstraint,
-    JSON,
-)
+from sqlalchemy import BIGINT, JSON, VARCHAR, Column, Integer, UniqueConstraint
 
 from NextHime import Base
 
 
 class Reactions(Base):
     __tablename__ = "reactions"
-    __table_args__ = (UniqueConstraint(
-        "guild_id", "channel_id", "message_id"),)
+    __table_args__ = (UniqueConstraint("guild_id", "channel_id",
+                                       "message_id"), )
 
     id = Column(Integer, autoincrement=True, primary_key=True)
     guild_id = Column(BIGINT)

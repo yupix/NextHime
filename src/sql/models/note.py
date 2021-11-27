@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, VARCHAR, BIGINT, UniqueConstraint
+from sqlalchemy import BIGINT, VARCHAR, Column, ForeignKey, Integer, UniqueConstraint
 
 from NextHime import Base
 
@@ -24,12 +24,15 @@ class NotesCategory(Base):
 
 class NotesDetail(Base):
     __tablename__ = "notes_detail"
-    __table_args__ = (UniqueConstraint("user_id", "content", "category_name"),)
+    __table_args__ = (UniqueConstraint("user_id", "content",
+                                       "category_name"), )
 
     id = Column(BIGINT, primary_key=True, autoincrement=True)
     user_id = Column(
-        BIGINT, ForeignKey("notes_user.user_id", onupdate="CASCADE", ondelete="CASCADE")
-    )
+        BIGINT,
+        ForeignKey("notes_user.user_id",
+                   onupdate="CASCADE",
+                   ondelete="CASCADE"))
     content = Column(VARCHAR(255))
     category_name = Column(VARCHAR(255))
 
