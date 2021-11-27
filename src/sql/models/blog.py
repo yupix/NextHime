@@ -1,12 +1,12 @@
 from psycopg2.sql import NULL
 from sqlalchemy import (
+    BIGINT,
+    JSON,
+    TIMESTAMP,
     Column,
     ForeignKey,
     Integer,
-    BIGINT,
     UniqueConstraint,
-    JSON,
-    TIMESTAMP,
 )
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.functions import current_timestamp
@@ -19,25 +19,27 @@ class GuildBlogs(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     guild_id = Column(BIGINT, unique=True)
-    blogs_category = relationship(
-        "BlogsCategory", backref="guild_blogs", lazy="dynamic"
-    )
+    blogs_category = relationship("BlogsCategory",
+                                  backref="guild_blogs",
+                                  lazy="dynamic")
     replay_channel_id = Column(BIGINT, nullable=True)
 
 
 class BlogsCategory(Base):
     __tablename__ = "blogs_category"
-    __table_args__ = (UniqueConstraint("category_id"),)
+    __table_args__ = (UniqueConstraint("category_id"), )
 
     id = Column(BIGINT, primary_key=True, autoincrement=True)
     guild_id = Column(
         BIGINT,
-        ForeignKey("guild_blogs.guild_id", onupdate="CASCADE", ondelete="CASCADE"),
+        ForeignKey("guild_blogs.guild_id",
+                   onupdate="CASCADE",
+                   ondelete="CASCADE"),
     )
     category_id = Column(BIGINT)
-    blogs_channel = relationship(
-        "BlogsChannel", backref="blogs_category", lazy="dynamic"
-    )
+    blogs_channel = relationship("BlogsChannel",
+                                 backref="blogs_category",
+                                 lazy="dynamic")
 
 
 class BlogsChannel(Base):
@@ -45,16 +47,18 @@ class BlogsChannel(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     category_id = Column(
         BIGINT,
-        ForeignKey(
-            "blogs_category.category_id", onupdate="CASCADE", ondelete="CASCADE"
-        ),
+        ForeignKey("blogs_category.category_id",
+                   onupdate="CASCADE",
+                   ondelete="CASCADE"),
     )
     channel_id = Column(BIGINT, unique=True)
     owner_id = Column(BIGINT)
     sub_user_list = Column(JSON)
     xp = Column(BIGINT)
     level = Column(BIGINT)
-    blogs_user = relationship("BlogsUser", backref="blogs_channel", lazy="dynamic")
+    blogs_user = relationship("BlogsUser",
+                              backref="blogs_channel",
+                              lazy="dynamic")
 
 
 class BlogsUser(Base):
@@ -62,7 +66,9 @@ class BlogsUser(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     channel_id = Column(
         BIGINT,
-        ForeignKey("blogs_channel.channel_id", onupdate="CASCADE", ondelete="CASCADE"),
+        ForeignKey("blogs_channel.channel_id",
+                   onupdate="CASCADE",
+                   ondelete="CASCADE"),
     )
     user_id = Column(BIGINT)
     xp = Column(BIGINT, default=0)
