@@ -19,17 +19,24 @@ async def server_info(server_id: int) -> dict:
     admin_list = []
     for member in guild.members:
         if member.guild_permissions.administrator:
-            admin_list.append({f"{member}": {"id": f"{member.id}", "name": f"{member.name}"}})
-        print(f'{member} {member.guild_permissions.administrator}')
-    return {"result": {"type": "success",
-                       "guild": {
-                           "name": f"{guild.name}",
-                           "id": f"{guild.id}",
-                           "owner": {
-                               "name": f"{guild.owner.name}",
-                               "id": f"{guild.owner.id}"
-                           },
-                           "operators": admin_list
-                       }
-                       }
-            }
+            admin_list.append({
+                f"{member}": {
+                    "id": f"{member.id}",
+                    "name": f"{member.name}"
+                }
+            })
+        print(f"{member} {member.guild_permissions.administrator}")
+    return {
+        "result": {
+            "type": "success",
+            "guild": {
+                "name": f"{guild.name}",
+                "id": f"{guild.id}",
+                "owner": {
+                    "name": f"{guild.owner.name}",
+                    "id": f"{guild.owner.id}"
+                },
+                "operators": admin_list,
+            },
+        }
+    }

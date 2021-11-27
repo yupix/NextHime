@@ -5,11 +5,11 @@ import time
 from logging import getLogger
 
 import i18n
+import redis
 from dbmanager import DbManager
 from dotenv import load_dotenv
 from halo import Halo
 from loguru import logger
-import redis
 from rich.console import Console
 from rich.logging import RichHandler
 from sqlalchemy import create_engine
@@ -41,7 +41,7 @@ config_ini = configparser.ConfigParser(os.environ)
 config_ini.read("./config.ini", encoding="utf-8")
 config = HimeConfig(config_ini)
 
-i18n.load_path.append('./src/language')
+i18n.load_path.append("./src/language")
 i18n.set("locale", "ja")
 i18n.set("fallback", "ja")
 i18n.set("skip_locale_root_data", True)
@@ -58,12 +58,11 @@ logging.basicConfig(
 )
 log = logging.getLogger("rich")
 
-
-redis_conn = redis.Redis(host='localhost', port=6379)
+redis_conn = redis.Redis(host="localhost", port=6379)
 try:
     redis_conn.ping()
 except redis.exceptions.ConnectionError:
-    log.warning('redisに接続できませんでした。warframeが有効の場合自動的に無効になっています。')
+    log.warning("redisに接続できませんでした。warframeが有効の場合自動的に無効になっています。")
     config.warframe.use = False
 
 engine = create_engine(
@@ -79,8 +78,10 @@ session = Session()
 
 console = Console()
 
-
-spinner = Halo(text=f"{i18n.t('message.logger.init_success', locale=config.options.lang)}", spinner="dots")
+spinner = Halo(
+    text=f"{i18n.t('message.logger.init_success', locale=config.options.lang)}",
+    spinner="dots",
+)
 spinner.start()
 db_manager = DbManager(
     session=session,
@@ -91,6 +92,8 @@ db_manager = DbManager(
 )
 spinner.succeed()
 
-spinner = Halo(
-    text="Loading Now", spinner={"interval": 300, "frames": ["-", "+", "o", "+", "-"]}
-)
+spinner = Halo(text="Loading Now",
+               spinner={
+                   "interval": 300,
+                   "frames": ["-", "+", "o", "+", "-"]
+               })

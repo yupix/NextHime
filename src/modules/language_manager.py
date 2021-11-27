@@ -24,5 +24,6 @@ class LanguageManager:
         dict:
             取得したyamlを返します
         """
-        with open(f"{self.base_path}{self.lang}/{self.module_name}", encoding="utf-8") as f:
+        with open(f"{self.base_path}{self.lang}/{self.module_name}",
+                  encoding="utf-8") as f:
             return yaml.safe_load(f)

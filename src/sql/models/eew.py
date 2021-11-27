@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, VARCHAR, BIGINT
+from sqlalchemy import BIGINT, VARCHAR, Column, Integer
 
 from NextHime import Base
 

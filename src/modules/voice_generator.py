@@ -11,10 +11,11 @@ csv_header = ["server_id", "before", "after"]
 
 
 async def create_wave(input_text):
-    if config.jtalk.bin_path != "None" and config.jtalk.dic_path != "None" and config.jtalk.voice_path != "None":
+    if (config.jtalk.bin_path != "None" and config.jtalk.dic_path != "None"
+            and config.jtalk.voice_path != "None"):
         # TODO: 2020/11/22 辞書を追加
 
-        if platform.system() == 'Windows':
+        if platform.system() == "Windows":
             encoding = "shift_jis"
         else:
             encoding = "UTF-8"

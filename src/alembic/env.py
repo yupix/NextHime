@@ -1,12 +1,10 @@
+import sys
 from importlib import import_module
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config, MetaData
-from sqlalchemy import pool
+from sqlalchemy import MetaData, engine_from_config, pool
 
 from alembic import context
-
-import sys
 
 sys.path = ["", ".."] + sys.path[1:]
 
@@ -60,7 +58,6 @@ for target in target_models:
     model = import_module(f"{target}")
     target_metadata = combine_metadata(model.Base.metadata)
 
-
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
@@ -104,10 +101,9 @@ def run_migrations_online():
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata,
-            compare_type=True
-        )
+        context.configure(connection=connection,
+                          target_metadata=target_metadata,
+                          compare_type=True)
 
         with context.begin_transaction():
             context.run_migrations()

@@ -46,10 +46,11 @@ class HimeConfig(object):
             self.port: int = config_dict["API"]["port"]
             self.discord_client: str = config_dict["API"]["discord_client"]
             self.discord_client_secret: str = config_dict["API"][
-                "discord_client_secret"
-            ]
-            self.discord_callback_url: str = config_dict["API"]["discord_callback_url"]
-            self.discord_redirect_url: str = config_dict["API"]["discord_redirect_url"]
+                "discord_client_secret"]
+            self.discord_callback_url: str = config_dict["API"][
+                "discord_callback_url"]
+            self.discord_redirect_url: str = config_dict["API"][
+                "discord_redirect_url"]
 
     class EEW(object):
         def __init__(self, config_dict):
@@ -66,8 +67,7 @@ class HimeConfig(object):
             self.bin_path: str = config_dict["JTALK"]["bin_path"]
             self.output_wav_name: str = (
                 NextHimeUtils().temp_path +
-                config_dict["JTALK"]["output_wav_name"]
-            )
+                config_dict["JTALK"]["output_wav_name"])
             self.speed: int = config_dict["JTALK"]["speed"]
             self.aloud: bool = strtobool(config_dict["JTALK"]["aloud"])
 
@@ -79,14 +79,11 @@ class HimeConfig(object):
             self.log_show_bot: bool = strtobool(
                 config_dict["OPTIONS"]["log_show_bot"])
             self.log_show_commit: bool = strtobool(
-                config_dict["OPTIONS"]["log_show_commit"]
-            )
+                config_dict["OPTIONS"]["log_show_commit"])
             self.log_force_show_commit: bool = config_dict["OPTIONS"][
-                "log_force_show_commit"
-            ]
+                "log_force_show_commit"]
             self.slash_command_guild: List[int] = ast.literal_eval(
-                config_dict["OPTIONS"]["slash_command_guild"]
-            )
+                config_dict["OPTIONS"]["slash_command_guild"])
 
     class BLOG(object):
         def __init__(self, config_dict):

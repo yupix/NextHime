@@ -30,22 +30,52 @@ class EasyLogger:
 
         coloredlogs.CAN_USE_BOLD_FONT = True
         coloredlogs.DEFAULT_FIELD_STYLES = {
-            "asctime": {"color": "green"},
-            "hostname": {"color": "magenta"},
-            "levelname": {"color": "black", "bold": True},
-            "name": {"color": "blue"},
-            "programname": {"color": "cyan"},
+            "asctime": {
+                "color": "green"
+            },
+            "hostname": {
+                "color": "magenta"
+            },
+            "levelname": {
+                "color": "black",
+                "bold": True
+            },
+            "name": {
+                "color": "blue"
+            },
+            "programname": {
+                "color": "cyan"
+            },
         }
         coloredlogs.DEFAULT_LEVEL_STYLES = {
-            "critical": {"color": "red", "bold": True},
-            "error": {"color": "red"},
-            "warning": {"color": "yellow"},
-            "notice": {"color": "magenta"},
-            "info": {"color": "green"},
+            "critical": {
+                "color": "red",
+                "bold": True
+            },
+            "error": {
+                "color": "red"
+            },
+            "warning": {
+                "color": "yellow"
+            },
+            "notice": {
+                "color": "magenta"
+            },
+            "info": {
+                "color": "green"
+            },
             "debug": {},
-            "spam": {"color": "green", "faint": True},
-            "success": {"color": "green", "bold": True},
-            "verbose": {"color": "blue"},
+            "spam": {
+                "color": "green",
+                "faint": True
+            },
+            "success": {
+                "color": "green",
+                "bold": True
+            },
+            "verbose": {
+                "color": "blue"
+            },
         }
 
         coloredlogs.install(
@@ -61,7 +91,8 @@ class EasyLogger:
         setattr(
             self.logger,
             "success",
-            lambda message, *args: self.logger._log(self.logger.SUCCESS, message, args),
+            lambda message, *args: self.logger._log(self.logger.SUCCESS,
+                                                    message, args),
         )
         return self.logger
 

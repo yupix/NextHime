@@ -1,3 +1,3 @@
 from . import index
 
-__all__ = ['index']
+__all__ = ["index"]

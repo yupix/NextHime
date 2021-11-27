@@ -47,9 +47,9 @@ class EmbedManager(object):
                 color = 0x8BC34A
             elif mode == "failed":
                 color = 0xD32F2F
-        self.embed = discord.Embed(
-            title=embed_title, description=embed_description, color=color
-        )
+        self.embed = discord.Embed(title=embed_title,
+                                   description=embed_description,
+                                   color=color)
         if image is not None:
             self.embed.set_image(url=f"{image}")
         if embed_thumbnail is not None:
@@ -59,14 +59,14 @@ class EmbedManager(object):
             title = content.get("title", "タイトルが指定されていません")
             value = content.get("value", None)
             inline = content.get("option", {"inline": "True"}).get("inline")
-            self.embed.add_field(
-                name=title, value=value, inline=bool(strtobool(inline))
-            )
+            self.embed.add_field(name=title,
+                                 value=value,
+                                 inline=bool(strtobool(inline)))
         return self
 
-    async def send(
-        self, auto_delete: bool = False, sleep_time: int = None
-    ) -> discord.message.Message:
+    async def send(self,
+                   auto_delete: bool = False,
+                   sleep_time: int = None) -> discord.message.Message:
         """
         Parameters
         ----------
