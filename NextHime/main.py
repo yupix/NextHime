@@ -65,7 +65,6 @@ INITIAL_EXTENSIONS = [
     "NextHime.cogs.warframe",
     "NextHime.cogs.eew",
     "NextHime.cogs.read",
-    "NextHime.cogs.epicseven",
     "NextHime.cogs.blog"
 ]
 
