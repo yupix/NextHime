@@ -65,7 +65,8 @@ INITIAL_EXTENSIONS = [
     "NextHime.cogs.warframe",
     "NextHime.cogs.eew",
     "NextHime.cogs.read",
-    "NextHime.cogs.blog"
+    "NextHime.cogs.blog",
+    'NextHime.cogs.verify'
 ]
 
 
@@ -100,6 +101,9 @@ class NextHime(commands.Bot):
 [bold]{account_id}[/bold]: [blue]{self.user.id}[/blue]"""
             )
         )
+        verify_channel = await self.fetch_channel(930000360460939314)
+        note = await verify_channel.fetch_message(930064280383004802)
+
 
     async def on_message(self, ctx):
         if config.options.log_show_bot is False and ctx.author.bot is True:
@@ -162,8 +166,7 @@ class NextHime(commands.Bot):
             m = interaction.followup.send
         else:
             m = interaction.response.send_message
-        await m(embed=EmbedManager().generate('エラーが発生しました', f'`{exception}`',
-                                              mode='failed').embed)
+        await m(embed=EmbedManager().generate('エラーが発生しました', f'`{exception}`', mode='failed').embed)
 
 
 async def migrate():
