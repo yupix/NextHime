@@ -66,7 +66,8 @@ INITIAL_EXTENSIONS = [
     "NextHime.cogs.eew",
     "NextHime.cogs.read",
     "NextHime.cogs.blog",
-    'NextHime.cogs.verify'
+    'NextHime.cogs.verify',
+    "NextHime.cogs.sinoalice"
 ]
 
 
@@ -76,7 +77,7 @@ class NextHime(commands.Bot):
             command_prefix,
             description=None,
             intents=intents,
-            test_guilds=["530299114387406860"],
+            test_guilds=[530299114387406860],
             sync_commands_debug=True,
         )
 
