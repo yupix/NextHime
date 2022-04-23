@@ -77,7 +77,7 @@ six==1.16.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (pyt
 sniffio==1.2.0; python_version >= "3.5"
 soupsieve==2.2.1; python_version >= "3.6"
 spinners==0.0.24
-sqlalchemy==1.4.22; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
+sqlalchemy==1.4.35; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 starlette==0.14.2; python_version >= "3.6"
 termcolor==1.1.0
 toml==0.10.2; (python_version >= "2.6" and python_full_version < "3.0.0") or (python_full_version >= "3.3.0")
