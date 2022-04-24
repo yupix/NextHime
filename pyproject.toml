@@ -32,7 +32,7 @@ alfakana = {git = "https://github.com/yupix/alfakana.git"}
 python-i18n = {extras = ["YAML"], version = "^0.3.9"}
 PyQRCode = "^1.2.1"
 pypng = "^0.0.21"
-loguru = "^0.5.3"
+loguru = "^0.6.0"
 fastapi = "0.67.0"
 fastapi-discord = "0.2.1"
 fastapi-versioning = "0.10.0"
