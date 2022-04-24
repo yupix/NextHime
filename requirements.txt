@@ -11,7 +11,7 @@ certifi==2021.5.30
 cffi==1.14.6
 chardet==3.0.4
 charset-normalizer==2.0.12; python_full_version >= "3.5.0"
-click==8.0.1; python_version >= "3.6"
+click==8.1.2; python_version >= "3.6"
 colorama==0.4.4; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
 coloredlogs==15.0.1; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
 commonmark==0.9.1; python_full_version >= "3.6.2" and python_full_version < "4.0.0"
