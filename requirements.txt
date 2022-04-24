@@ -16,7 +16,7 @@ colorama==0.4.4; (python_version >= "2.7" and python_full_version < "3.0.0") or 
 coloredlogs==15.0.1; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
 commonmark==0.9.1; python_full_version >= "3.6.2" and python_full_version < "4.0.0"
 configparser==5.0.2; python_version >= "3.6"
-cycler==0.10.0
+cycler==0.11.0
 dacite==1.6.0; python_version >= "3.6"
 dbmanager @ git+https://github.com/yupix/dbmanager@93258484bcfe90a6ca10850cb121cfb993ec1039 ; python_version >= "3.7"
 disnake @ git+https://github.com/EQUENOS/disnake@master ; python_full_version >= "3.8.0"
