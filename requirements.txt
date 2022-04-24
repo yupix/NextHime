@@ -33,7 +33,7 @@ h2==3.2.0
 halo==0.0.31; python_version >= "3.4"
 hiredis==2.0.0; python_version >= "3.6"
 hpack==3.0.0
-hstspreload==2021.7.5; python_version >= "3.6"
+hstspreload==2021.12.1; python_version >= "3.6"
 httpcore==0.9.1; python_version >= "3.6"
 httpx==0.22.0; python_version >= "3.6"
 humanfriendly==9.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
