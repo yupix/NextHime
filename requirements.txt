@@ -4,7 +4,7 @@ alembic==1.6.5; (python_version >= "2.7" and python_full_version < "3.0.0") or (
 alfakana @ git+https://github.com/yupix/alfakana.git@master ; python_version >= "3.8" and python_version < "4.0"
 asgiref==3.4.1; python_version >= "3.6"
 async-timeout==3.0.1; python_full_version >= "3.5.3"
-attrs==21.2.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
+attrs==21.4.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
 autopep8==1.5.7
 beautifulsoup4==4.11.1
 certifi==2021.5.30
