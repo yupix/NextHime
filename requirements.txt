@@ -81,7 +81,7 @@ sqlalchemy==1.4.35; (python_version >= "2.7" and python_full_version < "3.0.0") 
 starlette==0.14.2; python_version >= "3.6"
 termcolor==1.1.0
 toml==0.10.2; (python_version >= "2.6" and python_full_version < "3.0.0") or (python_full_version >= "3.3.0")
-typing-extensions==3.10.0.0
+typing-extensions==3.10.0.2
 ujson==5.2.0; python_version >= "3.6"
 urllib3==1.26.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0" and python_version < "4")
 uvicorn==0.14.0
