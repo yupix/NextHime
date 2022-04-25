@@ -22,7 +22,7 @@ dbmanager @ git+https://github.com/yupix/dbmanager@93258484bcfe90a6ca10850cb121c
 disnake @ git+https://github.com/EQUENOS/disnake@master ; python_full_version >= "3.8.0"
 fastapi-discord==0.2.1; python_version >= "3.5"
 fastapi-versioning==0.10.0; python_version >= "3.6"
-fastapi==0.67.0; python_version >= "3.6"
+fastapi==0.75.2; python_version >= "3.6"
 feedparser==6.0.8; python_version >= "3.6"
 ffmpeg==1.4
 flake8==3.9.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
