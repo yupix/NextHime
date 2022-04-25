@@ -48,7 +48,7 @@ mako==1.2.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (pyt
 markupsafe==2.0.1; python_version >= "3.6"
 mccabe==0.6.1
 multidict==5.1.0; python_version >= "3.6"
-numpy==1.22.2; python_version >= "3.7"
+numpy==1.22.3; python_version >= "3.7"
 pillow==9.0.1; python_version >= "3.6"
 psycopg2==2.9.3; python_version >= "3.6"
 pycodestyle==2.7.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.4.0")
